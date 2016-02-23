@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo docker build --tag=docker-jolokia .
+sudo docker build --tag=${USER}-docker-jolokia .
