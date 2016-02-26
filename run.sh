@@ -1,15 +1,25 @@
 #!/bin/bash
 
-sudo docker run \
-  --tty=false \
-  --interactive=false \
+. config.rc
+
+if [ $(docker ps -a | grep ${CONTAINER_NAME} | awk '{print $NF}' | wc -l) -gt 0 ]
+then
+  docker kill ${CONTAINER_NAME} 2> /dev/null
+  docker rm   ${CONTAINER_NAME} 2> /dev/null
+fi
+
+# ---------------------------------------------------------------------------------------
+
+docker run \
+  --tty \
+  --interactive \
+  --detach \
   --publish=8080:8080 \
   --memory=512M \
-  --detach=true \
   --add-host blueprint-box:192.168.252.100 \
-  --read-only=false \
-  --name jolokia \
-  --hostname=${USER}-jolokia.coremedia.vm  \
-  ${USER}-docker-jolokia
+  --hostname=${USER}-${TYPE} \
+  --name ${CONTAINER_NAME} \
+  ${TAG_NAME}
 
+# ---------------------------------------------------------------------------------------
 # EOF

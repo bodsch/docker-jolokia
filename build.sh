@@ -1,3 +1,5 @@
 #!/bin/bash
 
-sudo docker build --tag=${USER}-docker-jolokia .
+. config.rc
+
+docker build --tag=${TAG_NAME} .
