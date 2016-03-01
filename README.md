@@ -1,6 +1,8 @@
 # docker-jolokia
 
-Minmal Image with Apache Tomcat8, openjdk7-jre and jolokia. Built starting from [gliderlabs' alpine][alpine]
+Minmal Image with Apache Tomcat8, openjdk8-jre-base and jolokia.
+
+Based on [gliderlabs' alpine](https://github.com/gliderlabs/docker-alpine)
 
 ## Build
 
@@ -33,6 +35,4 @@ Minmal Image with Apache Tomcat8, openjdk7-jre and jolokia. Built starting from 
 ## Ports
 
 * 8080
-
-[alpine]: <https://github.com/gliderlabs/docker-alpine>
 
