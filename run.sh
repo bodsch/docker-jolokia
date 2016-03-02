@@ -11,15 +11,16 @@ fi
 # ---------------------------------------------------------------------------------------
 
 docker run \
-  --tty \
   --interactive \
+  --tty \
   --detach \
   --publish=8080:8080 \
-  --memory=512M \
-  --add-host blueprint-box:192.168.252.100 \
+  --dns=172.17.0.1 \
   --hostname=${USER}-${TYPE} \
   --name ${CONTAINER_NAME} \
   ${TAG_NAME}
+
+[ -x /usr/local/bin/update-docker-dns.sh ] && sudo /usr/local/bin/update-docker-dns.sh
 
 # ---------------------------------------------------------------------------------------
 # EOF
