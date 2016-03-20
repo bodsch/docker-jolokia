@@ -14,8 +14,7 @@ docker run \
   --interactive \
   --tty \
   --detach \
-  --publish=8080:8080 \
-  --hostname=${USER}-${TYPE} \
+  --hostname ${USER}-${TYPE} \
   --name ${CONTAINER_NAME} \
   ${TAG_NAME}
 

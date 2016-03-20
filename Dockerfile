@@ -17,8 +17,15 @@ ENV JOLOKIA_VERSION=1.3.3
 # ---------------------------------------------------------------------------------------------------------------------
 
 RUN \
-  apk update && \
-  apk add \
+  apk --quiet update && \
+  apk --quiet upgrade
+
+RUN \
+  rm -Rf /var/run && \
+  ln -s /run /var/run
+
+RUN \
+  apk --quiet add \
     curl \
     ca-certificates \
     openjdk8-jre-base && \
@@ -45,7 +52,7 @@ RUN \
   --location \
   --retry 3 \
   --cacert /etc/ssl/certs/ca-certificates.crt \
-  https://repo1.maven.org/maven2/org/jolokia/jolokia-war/1.3.3/jolokia-war-1.3.3.war > ${CATALINA_HOME}/webapps/jolokia.war
+  https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war > ${CATALINA_HOME}/webapps/jolokia.war
 
 RUN \
   apk del --purge \
