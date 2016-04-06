@@ -17,7 +17,9 @@ ENV JOLOKIA_VERSION=1.3.3
 # ---------------------------------------------------------------------------------------------------------------------
 
 RUN \
-  apk update && \
+  apk update --quiet
+
+RUN \
   apk add --quiet \
     openjdk8-jre-base
 
