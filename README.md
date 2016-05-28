@@ -2,7 +2,11 @@
 
 Minmal Image with Apache Tomcat8, openjdk8-jre-base and jolokia.
 
-Based on [gliderlabs' alpine](https://github.com/gliderlabs/docker-alpine)
+## versions
+
+ - tomcat 8.5.2
+ - jolokia 1.3.3
+ - openjdk from alpine
 
 ## Build
 
