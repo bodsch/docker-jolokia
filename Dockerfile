@@ -3,12 +3,12 @@ FROM docker-alpine-base:latest
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.2.0"
+LABEL version="1.2.1"
 
 EXPOSE 8080
 
 ENV APACHE_MIRROR=mirror.synyx.de
-ENV TOMCAT_VERSION=8.5.0
+ENV TOMCAT_VERSION=8.5.2
 
 ENV CATALINA_HOME=/opt/tomcat
 ENV PATH $PATH:$CATALINA_HOME/bin
