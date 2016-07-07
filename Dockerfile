@@ -1,9 +1,8 @@
-
-FROM docker-alpine-base:latest
+FROM bodsch/docker-alpine-base:latest
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.2.1"
+LABEL version="1.3.0"
 
 EXPOSE 8080
 
@@ -17,13 +16,9 @@ ENV JOLOKIA_VERSION=1.3.3
 # ---------------------------------------------------------------------------------------------------------------------
 
 RUN \
-  apk update --quiet
-
-RUN \
-  apk add --quiet \
-    openjdk8-jre-base
-
-RUN \
+  apk --quiet --no-cache update && \
+  apk --quiet --no-cache add \
+    openjdk8-jre-base && \
   curl \
   --silent \
   --location \
@@ -38,17 +33,13 @@ RUN \
     rm -rf ${CATALINA_HOME}/webapps/docs && \
     rm -rf ${CATALINA_HOME}/webapps/ROOT && \
     rm -rf ${CATALINA_HOME}/webapps/host-manager && \
-    rm -rf ${CATALINA_HOME}/webapps/manager
-
-RUN \
+    rm -rf ${CATALINA_HOME}/webapps/manager && \
   curl \
   --silent \
   --location \
   --retry 3 \
   --cacert /etc/ssl/certs/ca-certificates.crt \
-  https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war > ${CATALINA_HOME}/webapps/jolokia.war
-
-RUN \
+  https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war > ${CATALINA_HOME}/webapps/jolokia.war && \
   apk del --quiet --purge \
     curl \
     wget && \
