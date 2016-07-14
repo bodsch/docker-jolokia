@@ -1,42 +1,49 @@
-# docker-jolokia
+docker-jolokia
+==============
 
 Minimal Image with Apache Tomcat8, openjdk8-jre-base and jolokia.
 
-## versions
+# Status
+[![Build Status](https://travis-ci.org/bodsch/docker-jolokia.svg?branch=master)](https://travis-ci.org/bodsch/docker-jolokia)
 
- - tomcat 8.5.2
+# Build
+
+Your can use the included Makefile.
+
+To build the Container:
+```make build```
+
+Starts the Container:
+```make run```
+
+Starts the Container with Login Shell:
+```make shell```
+
+Entering the Container:
+```make exec```
+
+Stop (but **not kill**):
+```make stop```
+
+# Docker Hub
+
+You can find the Container also at  [DockerHub](https://hub.docker.com/r/bodsch/docker-jolokia/)
+
+
+# Versions
+
+ - tomcat 8.5.4
  - jolokia 1.3.3
  - openjdk from alpine
 
-## Build
+```
 
- ```
- docker build --tag=docker-jolokia .
- ```
- or
+# Test
 
- ```
- ./build.sh
- ```
+    curl http://localhost:8080/jolokia/ | python -mjson.tool
 
-## run
 
- ```
- docker run docker-jolokia
- ```
- or
-
- ```
- ./run.sh
- ```
-
-## Test
-
- ```
- curl http://localhost:8080/jolokia/ | python -mjson.tool
- ```
-
-## Ports
+# Ports
 
 * 8080
 

@@ -1,7 +1,0 @@
-#
-
-TYPE="jolokia"
-
-TAG_NAME="${USER}-docker-${TYPE}"
-CONTAINER_NAME="${USER}-${TYPE}"
-
