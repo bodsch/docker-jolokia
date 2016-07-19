@@ -10,6 +10,7 @@ run:
 		--detach \
 		--interactive \
 		--tty \
+		--publish=8080:8080 \
 		--hostname=${USER}-mysql \
 		--name=${USER}-${TYPE} \
 		$(IMAGE_NAME)
@@ -19,6 +20,7 @@ shell:
 		--rm \
 		--interactive \
 		--tty \
+		--publish=8080:8080 \
 		--hostname=${USER}-mysql \
 		--name=${USER}-${TYPE} \
 		$(IMAGE_NAME)
