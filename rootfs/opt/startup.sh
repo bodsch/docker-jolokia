@@ -1,6 +1,5 @@
 #!/bin/sh
 
-set -x
 
 startSupervisor() {
 
@@ -19,7 +18,7 @@ run() {
 
   echo -e "\n"
   echo " ==================================================================="
-  echo " starting tomcat with joloika webapp"
+  echo " starting tomcat with jolokia webapp"
   echo " ==================================================================="
   echo ""
 
@@ -27,8 +26,5 @@ run() {
 }
 
 run
-
-
-# /bin/sh -e /opt/tomcat/bin/catalina.sh run 2> /dev/null
 
 # EOF
