@@ -1,9 +1,7 @@
-TYPE := jolokia
-IMAGE_NAME := ${USER}-docker-${TYPE}
 
 
 build:
-	docker build --rm --tag=$(IMAGE_NAME) .
+	docker build --rm --tag=docker-jolokia .
 
 run:
 	docker run \
@@ -11,9 +9,9 @@ run:
 		--interactive \
 		--tty \
 		--publish=8080:8080 \
-		--hostname=${USER}-mysql \
-		--name=${USER}-${TYPE} \
-		$(IMAGE_NAME)
+		--hostname=jolokia \
+		--name=jolokia \
+		docker-jolokia
 
 shell:
 	docker run \
@@ -21,17 +19,17 @@ shell:
 		--interactive \
 		--tty \
 		--publish=8080:8080 \
-		--hostname=${USER}-mysql \
-		--name=${USER}-${TYPE} \
-		$(IMAGE_NAME)
+		--hostname=jolokia \
+		--name=jolokia \
+		docker-jolokia
 
 exec:
 	docker exec \
 		--interactive \
 		--tty \
-		${USER}-${TYPE} \
+		jolokia \
 		/bin/sh
 
 stop:
 	docker kill \
-		${USER}-${TYPE}
+		jolokia

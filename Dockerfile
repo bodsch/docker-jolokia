@@ -2,7 +2,7 @@ FROM bodsch/docker-alpine-base:3.4
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.3.0"
+LABEL version="1.3.2"
 
 EXPOSE 8080
 
@@ -28,6 +28,7 @@ RUN \
     | gunzip \
     | tar x -C /opt/ && \
     ln -s /opt/apache-tomcat-${TOMCAT_VERSION} ${CATALINA_HOME} && \
+    ln -s ${CATALINA_HOME}/logs /var/log/jolokia && \
     rm -rf ${CATALINA_HOME}/webapps/* && \
     rm -rf ${CATALINA_HOME}/webapps/examples && \
     rm -rf ${CATALINA_HOME}/webapps/docs && \
@@ -45,7 +46,10 @@ RUN \
     wget && \
   rm -rf /src/* /tmp/* /var/cache/apk/*
 
-ADD rootfs/opt/startup.sh /opt/startup.sh
+ADD rootfs/ /
 
-ENTRYPOINT [ "/opt/startup.sh" ]
+# ADD rootfs/opt/startup.sh /opt/startup.sh
+
+# CMD [ '/bin/sh' ]
+CMD [ "/opt/startup.sh" ]
 
