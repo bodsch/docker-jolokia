@@ -1,13 +1,13 @@
-FROM bodsch/docker-alpine-base:3.4
+FROM bodsch/docker-alpine-base:1609-01
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.3.2"
+LABEL version="1.4.0"
 
 EXPOSE 8080
 
 ENV APACHE_MIRROR=mirror.synyx.de
-ENV TOMCAT_VERSION=8.5.4
+ENV TOMCAT_VERSION=8.5.5
 
 ENV CATALINA_HOME=/opt/tomcat
 ENV PATH $PATH:$CATALINA_HOME/bin
