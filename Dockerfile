@@ -1,22 +1,23 @@
-FROM bodsch/docker-alpine-base:1609-01
+FROM bodsch/docker-alpine-base:1610-01
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.4.0"
+LABEL version="1.4.1"
 
 EXPOSE 8080
 
-ENV APACHE_MIRROR=mirror.synyx.de
-ENV TOMCAT_VERSION=8.5.5
-
-ENV CATALINA_HOME=/opt/tomcat
-ENV PATH $PATH:$CATALINA_HOME/bin
-ENV JOLOKIA_VERSION=1.3.3
+ENV \
+  APACHE_MIRROR=mirror.synyx.de \
+  TOMCAT_VERSION=8.5.5 \
+  CATALINA_HOME=/opt/tomcat \
+  JOLOKIA_VERSION=1.3.3 \
+  PATH=${PATH}:${CATALINA_HOME}/bin
 
 # ---------------------------------------------------------------------------------------------------------------------
 
 RUN \
   apk --quiet --no-cache update && \
+  apk --quiet --no-cache upgrade && \
   apk --quiet --no-cache add \
     openjdk8-jre-base && \
   curl \
@@ -30,11 +31,6 @@ RUN \
     ln -s /opt/apache-tomcat-${TOMCAT_VERSION} ${CATALINA_HOME} && \
     ln -s ${CATALINA_HOME}/logs /var/log/jolokia && \
     rm -rf ${CATALINA_HOME}/webapps/* && \
-    rm -rf ${CATALINA_HOME}/webapps/examples && \
-    rm -rf ${CATALINA_HOME}/webapps/docs && \
-    rm -rf ${CATALINA_HOME}/webapps/ROOT && \
-    rm -rf ${CATALINA_HOME}/webapps/host-manager && \
-    rm -rf ${CATALINA_HOME}/webapps/manager && \
   curl \
   --silent \
   --location \
@@ -44,9 +40,11 @@ RUN \
   apk del --quiet --purge \
     curl \
     wget && \
-  rm -rf /src/* /tmp/* /var/cache/apk/*
+  rm -rf \
+    /tmp/* \
+    /var/cache/apk/*
 
-ADD rootfs/ /
+COPY rootfs/ /
 
 # ADD rootfs/opt/startup.sh /opt/startup.sh
 

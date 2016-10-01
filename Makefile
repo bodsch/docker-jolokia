@@ -1,35 +1,45 @@
 
+CONTAINER  := jolokia
+IMAGE_NAME := docker-jolokia
 
 build:
-	docker build --rm --tag=docker-jolokia .
+	docker build --rm --tag=$(IMAGE_NAME) .
+	@echo Image tag: ${IMAGE_NAME}
 
 run:
-	docker run \
+	docker \
+		run \
 		--detach \
 		--interactive \
 		--tty \
 		--publish=8080:8080 \
-		--hostname=jolokia \
-		--name=jolokia \
-		docker-jolokia
+		--hostname=${CONTAINER} \
+		--name=${CONTAINER} \
+		${IMAGE_NAME}
 
 shell:
-	docker run \
+	docker \
+		run \
 		--rm \
 		--interactive \
 		--tty \
 		--publish=8080:8080 \
-		--hostname=jolokia \
-		--name=jolokia \
-		docker-jolokia
+		--hostname=${CONTAINER} \
+		--name=${CONTAINER} \
+		${IMAGE_NAME}
 
 exec:
-	docker exec \
+	docker \
+		exec \
 		--interactive \
 		--tty \
-		jolokia \
-		/bin/sh
+		${CONTAINER} \
+		/bin/bash
 
 stop:
-	docker kill \
-		jolokia
+	docker \
+		kill ${CONTAINER}
+
+history:
+	docker \
+		history ${IMAGE_NAME}
