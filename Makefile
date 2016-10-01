@@ -3,7 +3,9 @@ CONTAINER  := jolokia
 IMAGE_NAME := docker-jolokia
 
 build:
-	docker build --rm --tag=$(IMAGE_NAME) .
+	docker \
+		build \
+		--rm --tag=$(IMAGE_NAME) .
 	@echo Image tag: ${IMAGE_NAME}
 
 run:
