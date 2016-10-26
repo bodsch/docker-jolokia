@@ -1,8 +1,9 @@
-FROM bodsch/docker-alpine-base:1610-01
+
+FROM bodsch/docker-alpine-base:1610-02
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.4.1"
+LABEL version="1.4.2"
 
 EXPOSE 8080
 
@@ -16,9 +17,9 @@ ENV \
 # ---------------------------------------------------------------------------------------------------------------------
 
 RUN \
-  apk --quiet --no-cache update && \
-  apk --quiet --no-cache upgrade && \
-  apk --quiet --no-cache add \
+  apk --no-cache update && \
+  apk --no-cache upgrade && \
+  apk --no-cache add \
     openjdk8-jre-base && \
   curl \
   --silent \
@@ -36,7 +37,8 @@ RUN \
   --location \
   --retry 3 \
   --cacert /etc/ssl/certs/ca-certificates.crt \
-  https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war > ${CATALINA_HOME}/webapps/jolokia.war && \
+  --output ${CATALINA_HOME}/webapps/jolokia.war \
+  https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war && \
   apk del --quiet --purge \
     curl \
     wget && \
@@ -46,8 +48,6 @@ RUN \
 
 COPY rootfs/ /
 
-# ADD rootfs/opt/startup.sh /opt/startup.sh
+CMD /opt/startup.sh
 
-# CMD [ '/bin/sh' ]
-CMD [ "/opt/startup.sh" ]
-
+# ---------------------------------------------------------------------------------------------------------------------

@@ -28,7 +28,8 @@ shell:
 		--publish=8080:8080 \
 		--hostname=${CONTAINER} \
 		--name=${CONTAINER} \
-		${IMAGE_NAME}
+		${IMAGE_NAME} \
+		/bin/bash
 
 exec:
 	docker \
