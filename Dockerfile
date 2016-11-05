@@ -1,15 +1,15 @@
 
-FROM bodsch/docker-alpine-base:1610-02
+FROM bodsch/docker-openjdk-8:1611-01
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.4.2"
+LABEL version="1.5.0"
 
 EXPOSE 8080
 
 ENV \
   APACHE_MIRROR=mirror.synyx.de \
-  TOMCAT_VERSION=8.5.5 \
+  TOMCAT_VERSION=8.5.6 \
   CATALINA_HOME=/opt/tomcat \
   JOLOKIA_VERSION=1.3.3 \
   PATH=${PATH}:${CATALINA_HOME}/bin
@@ -20,7 +20,7 @@ RUN \
   apk --no-cache update && \
   apk --no-cache upgrade && \
   apk --no-cache add \
-    openjdk8-jre-base && \
+    curl && \
   curl \
   --silent \
   --location \
