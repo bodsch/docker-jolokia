@@ -11,19 +11,23 @@ Minimal Image with Apache Tomcat8, openjdk8-jre-base and jolokia.
 Your can use the included Makefile.
 
 To build the Container:
-```make build```
+    make build
 
 Starts the Container:
-```make run```
+    make run
 
 Starts the Container with Login Shell:
-```make shell```
+    make shell
 
 Entering the Container:
-```make exec```
+    make exec
 
 Stop (but **not kill**):
-```make stop```
+    make stop
+
+History
+    make history
+
 
 # Docker Hub
 
@@ -32,11 +36,10 @@ You can find the Container also at  [DockerHub](https://hub.docker.com/r/bodsch/
 
 # Versions
 
- - tomcat 8.5.4
+ - tomcat 8.5.5
  - jolokia 1.3.3
  - openjdk from alpine
 
-```
 
 # Test
 

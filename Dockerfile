@@ -1,24 +1,26 @@
-FROM bodsch/docker-alpine-base:3.4
+
+FROM bodsch/docker-openjdk-8:1612-01
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.3.2"
+LABEL version="1.5.1"
 
 EXPOSE 8080
 
-ENV APACHE_MIRROR=mirror.synyx.de
-ENV TOMCAT_VERSION=8.5.4
-
-ENV CATALINA_HOME=/opt/tomcat
-ENV PATH $PATH:$CATALINA_HOME/bin
-ENV JOLOKIA_VERSION=1.3.3
+ENV \
+  APACHE_MIRROR=mirror.synyx.de \
+  TOMCAT_VERSION=8.5.9 \
+  CATALINA_HOME=/opt/tomcat \
+  JOLOKIA_VERSION=1.3.5 \
+  PATH=${PATH}:${CATALINA_HOME}/bin
 
 # ---------------------------------------------------------------------------------------------------------------------
 
 RUN \
-  apk --quiet --no-cache update && \
-  apk --quiet --no-cache add \
-    openjdk8-jre-base && \
+  apk --no-cache update && \
+  apk --no-cache upgrade && \
+  apk --no-cache add \
+    curl && \
   curl \
   --silent \
   --location \
@@ -30,26 +32,26 @@ RUN \
     ln -s /opt/apache-tomcat-${TOMCAT_VERSION} ${CATALINA_HOME} && \
     ln -s ${CATALINA_HOME}/logs /var/log/jolokia && \
     rm -rf ${CATALINA_HOME}/webapps/* && \
-    rm -rf ${CATALINA_HOME}/webapps/examples && \
-    rm -rf ${CATALINA_HOME}/webapps/docs && \
-    rm -rf ${CATALINA_HOME}/webapps/ROOT && \
-    rm -rf ${CATALINA_HOME}/webapps/host-manager && \
-    rm -rf ${CATALINA_HOME}/webapps/manager && \
   curl \
   --silent \
   --location \
   --retry 3 \
   --cacert /etc/ssl/certs/ca-certificates.crt \
-  https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war > ${CATALINA_HOME}/webapps/jolokia.war && \
+  --output ${CATALINA_HOME}/webapps/jolokia.war \
+  https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war && \
   apk del --quiet --purge \
+    wget \
+    bash \
+    nano \
+    tree \
     curl \
-    wget && \
-  rm -rf /src/* /tmp/* /var/cache/apk/*
+    ca-certificates && \
+  rm -rf \
+    /tmp/* \
+    /var/cache/apk/*
 
-ADD rootfs/ /
+COPY rootfs/ /
 
-# ADD rootfs/opt/startup.sh /opt/startup.sh
+CMD /opt/startup.sh
 
-# CMD [ '/bin/sh' ]
-CMD [ "/opt/startup.sh" ]
-
+# ---------------------------------------------------------------------------------------------------------------------
