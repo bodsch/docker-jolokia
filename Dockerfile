@@ -1,17 +1,17 @@
 
-FROM bodsch/docker-openjdk-8:1611-01
+FROM bodsch/docker-openjdk-8:1612-01
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.5.0"
+LABEL version="1.5.1"
 
 EXPOSE 8080
 
 ENV \
   APACHE_MIRROR=mirror.synyx.de \
-  TOMCAT_VERSION=8.5.6 \
+  TOMCAT_VERSION=8.5.9 \
   CATALINA_HOME=/opt/tomcat \
-  JOLOKIA_VERSION=1.3.3 \
+  JOLOKIA_VERSION=1.3.5 \
   PATH=${PATH}:${CATALINA_HOME}/bin
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -40,8 +40,12 @@ RUN \
   --output ${CATALINA_HOME}/webapps/jolokia.war \
   https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war && \
   apk del --quiet --purge \
+    wget \
+    bash \
+    nano \
+    tree \
     curl \
-    wget && \
+    ca-certificates && \
   rm -rf \
     /tmp/* \
     /var/cache/apk/*
