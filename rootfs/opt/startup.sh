@@ -16,13 +16,15 @@ startSupervisor() {
 
 run() {
 
-  echo -e "\n"
-  echo " ==================================================================="
-  echo " starting tomcat with jolokia webapp"
-  echo " ==================================================================="
-  echo ""
+  /bin/sh -e /opt/tomcat/bin/catalina.sh run
 
-  startSupervisor
+#   echo -e "\n"
+#   echo " ==================================================================="
+#   echo " starting tomcat with jolokia webapp"
+#   echo " ==================================================================="
+#   echo ""
+#
+#   startSupervisor
 }
 
 run

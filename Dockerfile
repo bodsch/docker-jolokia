@@ -1,9 +1,9 @@
 
-FROM bodsch/docker-openjdk-8:1612-01
+FROM bodsch/docker-openjdk-8:1701-02
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.5.1"
+LABEL version="1.6.0"
 
 EXPOSE 8080
 
@@ -52,6 +52,6 @@ RUN \
 
 COPY rootfs/ /
 
-CMD /opt/startup.sh
+CMD [ "/opt/startup.sh" ]
 
 # ---------------------------------------------------------------------------------------------------------------------
