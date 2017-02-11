@@ -3,7 +3,7 @@ FROM bodsch/docker-openjdk-8:1702-02
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.6.0"
+LABEL version="1702-02"
 
 EXPOSE 8080
 
