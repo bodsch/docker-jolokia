@@ -4,7 +4,7 @@ docker-jolokia
 Minimal Image with Apache Tomcat8, openjdk8-jre-base and jolokia.
 
 # Status
-[![Build Status](https://travis-ci.org/bodsch/docker-jolokia.svg?branch=1702-02)](https://travis-ci.org/bodsch/docker-jolokia)
+[![Build Status](https://travis-ci.org/bodsch/docker-jolokia.svg?branch=master)](https://travis-ci.org/bodsch/docker-jolokia)
 
 # Build
 
@@ -32,8 +32,8 @@ You can find the Container also at  [DockerHub](https://hub.docker.com/r/bodsch/
 
 # Versions
 
- - tomcat 8.x
- - jolokia 1.3.x
+ - tomcat 8.5.12
+ - jolokia 1.3.5
  - openjdk from alpine
 
 
