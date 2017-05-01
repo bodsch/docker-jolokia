@@ -3,23 +3,36 @@ FROM bodsch/docker-openjdk-8:latest
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1703-04"
+LABEL version="1705-01"
 
 EXPOSE 8080
 
 ENV \
+  TERM=xterm \
+  BUILD_DATE="2017-05-01" \
   APACHE_MIRROR=mirror.synyx.de \
-  TOMCAT_VERSION=8.5.12 \
+  TOMCAT_VERSION=8.5.14 \
   CATALINA_HOME=/opt/tomcat \
-  JOLOKIA_VERSION=1.3.5 \
+  JOLOKIA_VERSION=1.3.6 \
   PATH=${PATH}:${CATALINA_HOME}/bin
+
+LABEL org.label-schema.build-date=${BUILD_DATE} \
+      org.label-schema.name="Jolokia Docker Image" \
+      org.label-schema.description="Inofficial Jolokia Docker Image" \
+      org.label-schema.url="https://jolokia.org" \
+      org.label-schema.vcs-url="https://github.com/bodsch/docker-jolokia" \
+      org.label-schema.vendor="Bodo Schulz" \
+      org.label-schema.version=${JOLOKIA_VERSION} \
+      org.label-schema.schema-version="1.0" \
+      com.microscaling.docker.dockerfile="/Dockerfile" \
+      com.microscaling.license="GNU General Public License v3.0"
 
 # ---------------------------------------------------------------------------------------------------------------------
 
 RUN \
   apk --quiet --no-cache update && \
   apk --quiet --no-cache upgrade && \
-  apk --quiet --no-cache add \
+  apk --verbose --no-cache add  --virtual build-deps \
     curl && \
   mkdir /opt && \
   curl \
@@ -40,14 +53,19 @@ RUN \
     --cacert /etc/ssl/certs/ca-certificates.crt \
     --output ${CATALINA_HOME}/webapps/jolokia.war \
   https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war && \
-  apk --quiet --purge del \
-    curl && \
+  apk --purge del \
+    build-deps && \
+  rm -f ${CATALINA_HOME}/LICENSE && \
+  rm -f ${CATALINA_HOME}/NOTICE && \
+  rm -f ${CATALINA_HOME}/RELEASE-NOTES && \
+  rm -f ${CATALINA_HOME}/RUNNING.txt && \
+  rm -f ${CATALINA_HOME}/bin/*.bat && \
   rm -rf \
     /tmp/* \
     /var/cache/apk/*
 
 COPY rootfs/ /
 
-CMD [ "/opt/startup.sh" ]
+CMD [ "/init/run.sh" ]
 
 # ---------------------------------------------------------------------------------------------------------------------
