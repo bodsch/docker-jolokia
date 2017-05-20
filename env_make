@@ -1,0 +1,8 @@
+PORTS = \
+  --publish 8080:8080
+
+VOLUMES = \
+  --volume /var/log/docker:/var/log
+
+# ENV =
+

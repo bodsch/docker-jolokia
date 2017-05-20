@@ -1,39 +1,46 @@
 
-FROM bodsch/docker-openjdk-8:latest
+FROM alpine:edge
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
-
-LABEL version="1705-01"
 
 EXPOSE 8080
 
 ENV \
   TERM=xterm \
-  BUILD_DATE="2017-05-01" \
+  BUILD_DATE="2017-05-20" \
   APACHE_MIRROR=mirror.synyx.de \
-  TOMCAT_VERSION=8.5.14 \
+  TOMCAT_VERSION=8.5.15 \
   CATALINA_HOME=/opt/tomcat \
   JOLOKIA_VERSION=1.3.6 \
-  PATH=${PATH}:${CATALINA_HOME}/bin
+  OPENJDK_VERSION="8.131.11-r0" \
+  JAVA_HOME=/usr/lib/jvm/default-jvm \
+  PATH=${PATH}:/opt/jdk/bin:${CATALINA_HOME}/bin \
+  LANG=C.UTF-8
 
-LABEL org.label-schema.build-date=${BUILD_DATE} \
-      org.label-schema.name="Jolokia Docker Image" \
-      org.label-schema.description="Inofficial Jolokia Docker Image" \
-      org.label-schema.url="https://jolokia.org" \
-      org.label-schema.vcs-url="https://github.com/bodsch/docker-jolokia" \
-      org.label-schema.vendor="Bodo Schulz" \
-      org.label-schema.version=${JOLOKIA_VERSION} \
-      org.label-schema.schema-version="1.0" \
-      com.microscaling.docker.dockerfile="/Dockerfile" \
-      com.microscaling.license="GNU General Public License v3.0"
+LABEL \
+  version="1705-04.1" \
+  org.label-schema.build-date=${BUILD_DATE} \
+  org.label-schema.name="Jolokia Docker Image" \
+  org.label-schema.description="Inofficial Jolokia Docker Image" \
+  org.label-schema.url="https://jolokia.org" \
+  org.label-schema.vcs-url="https://github.com/bodsch/docker-jolokia" \
+  org.label-schema.vendor="Bodo Schulz" \
+  org.label-schema.version=${JOLOKIA_VERSION} \
+  org.label-schema.schema-version="1.0" \
+  com.microscaling.docker.dockerfile="/Dockerfile" \
+  com.microscaling.license="GNU General Public License v3.0"
 
 # ---------------------------------------------------------------------------------------------------------------------
 
 RUN \
   apk --quiet --no-cache update && \
   apk --quiet --no-cache upgrade && \
-  apk --verbose --no-cache add  --virtual build-deps \
-    curl && \
+  apk --quiet --no-cache add \
+    curl \
+    openjdk8-jre-base && \
+  echo "export LANG=${LANG}" > /etc/profile.d/locale.sh && \
+  echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
+  sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' ${JAVA_HOME}/jre/lib/security/java.security && \
   mkdir /opt && \
   curl \
     --silent \
@@ -53,8 +60,8 @@ RUN \
     --cacert /etc/ssl/certs/ca-certificates.crt \
     --output ${CATALINA_HOME}/webapps/jolokia.war \
   https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war && \
-  apk --purge del \
-    build-deps && \
+  apk --quiet --purge del \
+    curl && \
   rm -f ${CATALINA_HOME}/LICENSE && \
   rm -f ${CATALINA_HOME}/NOTICE && \
   rm -f ${CATALINA_HOME}/RELEASE-NOTES && \
