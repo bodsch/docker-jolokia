@@ -1,5 +1,5 @@
 
-FROM alpine:edge
+FROM alpine:3.6
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
@@ -7,7 +7,7 @@ EXPOSE 8080
 
 ENV \
   TERM=xterm \
-  BUILD_DATE="2017-05-20" \
+  BUILD_DATE="2017-05-27" \
   APACHE_MIRROR=mirror.synyx.de \
   TOMCAT_VERSION=8.5.15 \
   CATALINA_HOME=/opt/tomcat \
@@ -18,7 +18,7 @@ ENV \
   LANG=C.UTF-8
 
 LABEL \
-  version="1705-04.1" \
+  version="1705-04.2" \
   org.label-schema.build-date=${BUILD_DATE} \
   org.label-schema.name="Jolokia Docker Image" \
   org.label-schema.description="Inofficial Jolokia Docker Image" \
