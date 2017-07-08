@@ -6,19 +6,21 @@ MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 EXPOSE 8080
 
 ENV \
+  ALPINE_MIRROR="mirror1.hs-esslingen.de/pub/Mirrors" \
+  ALPINE_VERSION="v3.6" \
   TERM=xterm \
-  BUILD_DATE="2017-05-27" \
+  BUILD_DATE="2017-07-08" \
   APACHE_MIRROR=mirror.synyx.de \
-  TOMCAT_VERSION=8.5.15 \
+  TOMCAT_VERSION=8.5.16 \
   CATALINA_HOME=/opt/tomcat \
-  JOLOKIA_VERSION=1.3.6 \
-  OPENJDK_VERSION="8.131.11-r0" \
+  JOLOKIA_VERSION=1.3.7 \
+  OPENJDK_VERSION="8.131.11-r2" \
   JAVA_HOME=/usr/lib/jvm/default-jvm \
   PATH=${PATH}:/opt/jdk/bin:${CATALINA_HOME}/bin \
   LANG=C.UTF-8
 
 LABEL \
-  version="1705-04.2" \
+  version="1707-27.1" \
   org.label-schema.build-date=${BUILD_DATE} \
   org.label-schema.name="Jolokia Docker Image" \
   org.label-schema.description="Inofficial Jolokia Docker Image" \
@@ -33,9 +35,11 @@ LABEL \
 # ---------------------------------------------------------------------------------------------------------------------
 
 RUN \
-  apk --quiet --no-cache update && \
-  apk --quiet --no-cache upgrade && \
-  apk --quiet --no-cache add \
+  echo "http://${ALPINE_MIRROR}/alpine/${ALPINE_VERSION}/main"       > /etc/apk/repositories && \
+  echo "http://${ALPINE_MIRROR}/alpine/${ALPINE_VERSION}/community" >> /etc/apk/repositories && \
+  apk --no-cache update && \
+  apk --no-cache upgrade && \
+  apk --no-cache add \
     curl \
     openjdk8-jre-base && \
   echo "export LANG=${LANG}" > /etc/profile.d/locale.sh && \
@@ -60,7 +64,7 @@ RUN \
     --cacert /etc/ssl/certs/ca-certificates.crt \
     --output ${CATALINA_HOME}/webapps/jolokia.war \
   https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war && \
-  apk --quiet --purge del \
+  apk --purge del \
     curl && \
   rm -f ${CATALINA_HOME}/LICENSE && \
   rm -f ${CATALINA_HOME}/NOTICE && \
