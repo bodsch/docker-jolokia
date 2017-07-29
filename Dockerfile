@@ -3,7 +3,7 @@ FROM alpine:3.6
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-EXPOSE 8080
+EXPOSE 8080 22222
 
 ENV \
   ALPINE_MIRROR="mirror1.hs-esslingen.de/pub/Mirrors" \

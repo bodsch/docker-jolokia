@@ -1,5 +1,6 @@
 PORTS = \
-  --publish 8080:8080
+  --publish 8080:8080 \
+  --publish 22222:22222 \
 
 VOLUMES = \
   --volume /var/log/docker:/var/log
