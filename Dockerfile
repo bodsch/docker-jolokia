@@ -3,13 +3,13 @@ FROM alpine:3.6
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-EXPOSE 8080
+EXPOSE 8080 22222
 
 ENV \
   ALPINE_MIRROR="mirror1.hs-esslingen.de/pub/Mirrors" \
   ALPINE_VERSION="v3.6" \
   TERM=xterm \
-  BUILD_DATE="2017-07-08" \
+  BUILD_DATE="2017-07-26" \
   APACHE_MIRROR=mirror.synyx.de \
   TOMCAT_VERSION=8.5.16 \
   CATALINA_HOME=/opt/tomcat \
@@ -20,7 +20,7 @@ ENV \
   LANG=C.UTF-8
 
 LABEL \
-  version="1707-27.1" \
+  version="1707-30" \
   org.label-schema.build-date=${BUILD_DATE} \
   org.label-schema.name="Jolokia Docker Image" \
   org.label-schema.description="Inofficial Jolokia Docker Image" \

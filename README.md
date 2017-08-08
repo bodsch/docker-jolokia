@@ -47,6 +47,7 @@ You can find the Container also at  [DockerHub](https://hub.docker.com/r/bodsch/
 # Test
 
     curl http://localhost:8080/jolokia/ | python -mjson.tool
+    curl http://localhost:8080/jolokia/list | python -mjson.tool
 
 
 # Ports
