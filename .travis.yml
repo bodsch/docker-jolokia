@@ -4,7 +4,7 @@ services:
   - docker
 
 install:
-  - docker build --tag bodsch/docker-jolokia .
+  - travis_retry docker build --tag bodsch/docker-jolokia .
   - docker run --detach --name jolokia bodsch/docker-jolokia
 
 script:

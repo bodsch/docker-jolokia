@@ -5,9 +5,9 @@ Minimal Image with Apache Tomcat8, openjdk8-jre-base and jolokia.
 
 # Status
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/bodsch/docker-jolokia.svg?branch=1705-01)][hub]
-[![Image Size](https://images.microbadger.com/badges/image/bodsch/docker-jolokia.svg?branch=1705-01)][microbadger]
-[![Build Status](https://travis-ci.org/bodsch/docker-jolokia.svg?branch=1705-01)][travis]
+[![Docker Pulls](https://img.shields.io/docker/pulls/bodsch/docker-jolokia.svg?branch)][hub]
+[![Image Size](https://images.microbadger.com/badges/image/bodsch/docker-jolokia.svg?branch)][microbadger]
+[![Build Status](https://travis-ci.org/bodsch/docker-jolokia.svg?branch)][travis]
 
 [hub]: https://hub.docker.com/r/bodsch/docker-jolokia/
 [microbadger]: https://microbadger.com/images/bodsch/docker-jolokia
