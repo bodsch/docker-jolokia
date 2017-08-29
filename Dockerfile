@@ -9,9 +9,9 @@ ENV \
   ALPINE_MIRROR="mirror1.hs-esslingen.de/pub/Mirrors" \
   ALPINE_VERSION="v3.6" \
   TERM=xterm \
-  BUILD_DATE="2017-07-26" \
+  BUILD_DATE="2017-08-29" \
   APACHE_MIRROR=mirror.synyx.de \
-  TOMCAT_VERSION=8.5.16 \
+  TOMCAT_VERSION=8.5.20 \
   CATALINA_HOME=/opt/tomcat \
   JOLOKIA_VERSION=1.3.7 \
   OPENJDK_VERSION="8.131.11-r2" \
@@ -20,7 +20,7 @@ ENV \
   LANG=C.UTF-8
 
 LABEL \
-  version="1707-30" \
+  version="1708-35" \
   org.label-schema.build-date=${BUILD_DATE} \
   org.label-schema.name="Jolokia Docker Image" \
   org.label-schema.description="Inofficial Jolokia Docker Image" \
@@ -46,6 +46,8 @@ RUN \
   echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
   sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' ${JAVA_HOME}/jre/lib/security/java.security && \
   mkdir /opt && \
+  #
+  echo "download tomcat (https://${APACHE_MIRROR}/apache/tomcat/tomcat-8)" && \
   curl \
     --silent \
     --location \
@@ -57,6 +59,8 @@ RUN \
     ln -s /opt/apache-tomcat-${TOMCAT_VERSION} ${CATALINA_HOME} && \
     ln -s ${CATALINA_HOME}/logs /var/log/jolokia && \
     rm -rf ${CATALINA_HOME}/webapps/* && \
+  #
+  echo "download jolokia war (https://repo1.maven.org/maven2/org/jolokia/jolokia-war)" && \
   curl \
     --silent \
     --location \
@@ -64,6 +68,16 @@ RUN \
     --cacert /etc/ssl/certs/ca-certificates.crt \
     --output ${CATALINA_HOME}/webapps/jolokia.war \
   https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war && \
+  #
+  echo "download jolokia spring (https://repo1.maven.org/maven2/org/jolokia/jolokia-spring)" && \
+  curl \
+    --silent \
+    --location \
+    --retry 3 \
+    --cacert /etc/ssl/certs/ca-certificates.crt \
+    --output /opt/jolokia.jar \
+  https://repo1.maven.org/maven2/org/jolokia/jolokia-spring/${JOLOKIA_VERSION}/jolokia-spring-${JOLOKIA_VERSION}.jar && \
+  #
   apk --purge del \
     curl && \
   rm -f ${CATALINA_HOME}/LICENSE && \
