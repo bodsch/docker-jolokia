@@ -9,7 +9,7 @@ ENV \
   ALPINE_MIRROR="mirror1.hs-esslingen.de/pub/Mirrors" \
   ALPINE_VERSION="v3.6" \
   TERM=xterm \
-  BUILD_DATE="2017-09-12" \
+  BUILD_DATE="2017-09-14" \
   APACHE_MIRROR=mirror.synyx.de \
   TOMCAT_VERSION=8.5.20 \
   CATALINA_HOME=/opt/tomcat \
