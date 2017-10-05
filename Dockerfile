@@ -9,9 +9,9 @@ ENV \
   ALPINE_MIRROR="mirror1.hs-esslingen.de/pub/Mirrors" \
   ALPINE_VERSION="v3.6" \
   TERM=xterm \
-  BUILD_DATE="2017-08-29" \
+  BUILD_DATE="2017-10-05" \
   APACHE_MIRROR=mirror.synyx.de \
-  TOMCAT_VERSION=8.5.20 \
+  TOMCAT_VERSION=8.5.23 \
   CATALINA_HOME=/opt/tomcat \
   JOLOKIA_VERSION=1.3.7 \
   OPENJDK_VERSION="8.131.11-r2" \
@@ -20,7 +20,7 @@ ENV \
   LANG=C.UTF-8
 
 LABEL \
-  version="1708-35" \
+  version="1710" \
   org.label-schema.build-date=${BUILD_DATE} \
   org.label-schema.name="Jolokia Docker Image" \
   org.label-schema.description="Inofficial Jolokia Docker Image" \
@@ -68,15 +68,6 @@ RUN \
     --cacert /etc/ssl/certs/ca-certificates.crt \
     --output ${CATALINA_HOME}/webapps/jolokia.war \
   https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war && \
-  #
-  echo "download jolokia spring (https://repo1.maven.org/maven2/org/jolokia/jolokia-spring)" && \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --cacert /etc/ssl/certs/ca-certificates.crt \
-    --output /opt/jolokia.jar \
-  https://repo1.maven.org/maven2/org/jolokia/jolokia-spring/${JOLOKIA_VERSION}/jolokia-spring-${JOLOKIA_VERSION}.jar && \
   #
   apk --purge del \
     curl && \
