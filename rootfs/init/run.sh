@@ -3,7 +3,7 @@
 if [ ${DEBUG} ]
 then
 
-file="/opt/tomcat/conf/Catalina/localhost/jolokia.xml"
+  file="/opt/tomcat/conf/Catalina/localhost/jolokia.xml"
 
   cat << EOF > ${file}
 <!-- see https://jolokia.org/reference/html/agents.html#war-agent-installation for full examples -->
@@ -14,6 +14,19 @@ file="/opt/tomcat/conf/Catalina/localhost/jolokia.xml"
 EOF
 
 fi
+
+if [ -d /init/custom.d ]
+then
+  for f in /init/custom.d/*
+  do
+    case "$f" in
+      *.sh)     echo "$0: running $f"; . "$f" ;;
+      *)        echo "$0: ignoring $f" ;;
+    esac
+    echo
+  done
+fi
+
 
 # set pid file
 CATALINA_PID="${CATALINA_HOME}/temp/catalina.pid"
