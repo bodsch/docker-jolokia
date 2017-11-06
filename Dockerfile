@@ -9,9 +9,9 @@ ENV \
   ALPINE_MIRROR="mirror1.hs-esslingen.de/pub/Mirrors" \
   ALPINE_VERSION="v3.6" \
   TERM=xterm \
-  BUILD_DATE="2017-09-14" \
+  BUILD_DATE="2017-11-06" \
   APACHE_MIRROR=mirror.synyx.de \
-  TOMCAT_VERSION=8.5.20 \
+  TOMCAT_VERSION=8.5.23 \
   CATALINA_HOME=/opt/tomcat \
   JOLOKIA_VERSION=1.3.7 \
   OPENJDK_VERSION="8.131.11-r2" \
@@ -20,7 +20,7 @@ ENV \
   LANG=C.UTF-8
 
 LABEL \
-  version="1709-37" \
+  version="1711" \
   org.label-schema.build-date=${BUILD_DATE} \
   org.label-schema.name="Jolokia Docker Image" \
   org.label-schema.description="Inofficial Jolokia Docker Image" \
@@ -47,7 +47,7 @@ RUN \
   sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' ${JAVA_HOME}/jre/lib/security/java.security && \
   mkdir /opt && \
   #
-  echo "download tomcat (https://${APACHE_MIRROR}/apache/tomcat/tomcat-8)" && \
+  echo "download tomcat version ${TOMCAT_VERSION} (https://${APACHE_MIRROR}/apache/tomcat/tomcat-8)" && \
   curl \
     --silent \
     --location \
@@ -60,7 +60,7 @@ RUN \
     ln -s ${CATALINA_HOME}/logs /var/log/jolokia && \
     rm -rf ${CATALINA_HOME}/webapps/* && \
   #
-  echo "download jolokia war (https://repo1.maven.org/maven2/org/jolokia/jolokia-war)" && \
+  echo "download jolokia version ${JOLOKIA_VERSION} (https://repo1.maven.org/maven2/org/jolokia/jolokia-war)" && \
   curl \
     --silent \
     --location \
