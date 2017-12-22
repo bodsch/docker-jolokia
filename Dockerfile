@@ -1,26 +1,23 @@
 
-FROM alpine:3.6
-
-MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
+FROM alpine:3.7
 
 EXPOSE 8080 22222
 
 ENV \
-  ALPINE_MIRROR="mirror1.hs-esslingen.de/pub/Mirrors" \
-  ALPINE_VERSION="v3.6" \
   TERM=xterm \
-  BUILD_DATE="2017-11-06" \
+  BUILD_DATE="2017-12-22" \
   APACHE_MIRROR=mirror.synyx.de \
-  TOMCAT_VERSION=8.5.23 \
+  TOMCAT_VERSION="8.5.24" \
   CATALINA_HOME=/opt/tomcat \
-  JOLOKIA_VERSION=1.3.7 \
-  OPENJDK_VERSION="8.131.11-r2" \
+  JOLOKIA_VERSION="1.3.7" \
+  OPENJDK_VERSION="8.151.12" \
   JAVA_HOME=/usr/lib/jvm/default-jvm \
   PATH=${PATH}:/opt/jdk/bin:${CATALINA_HOME}/bin \
   LANG=C.UTF-8
 
 LABEL \
-  version="1711" \
+  version="1712" \
+  maintainer="Bodo Schulz <bodo@boone-schulz.de>" \
   org.label-schema.build-date=${BUILD_DATE} \
   org.label-schema.name="Jolokia Docker Image" \
   org.label-schema.description="Inofficial Jolokia Docker Image" \
@@ -35,18 +32,15 @@ LABEL \
 # ---------------------------------------------------------------------------------------------------------------------
 
 RUN \
-  echo "http://${ALPINE_MIRROR}/alpine/${ALPINE_VERSION}/main"       > /etc/apk/repositories && \
-  echo "http://${ALPINE_MIRROR}/alpine/${ALPINE_VERSION}/community" >> /etc/apk/repositories && \
-  apk --no-cache update && \
-  apk --no-cache upgrade && \
-  apk --no-cache add \
+  apk update --quiet --no-cache && \
+  apk upgrade --quiet --no-cache && \
+  apk add --quiet --no-cache \
     curl \
     openjdk8-jre-base && \
   echo "export LANG=${LANG}" > /etc/profile.d/locale.sh && \
   echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
   sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' ${JAVA_HOME}/jre/lib/security/java.security && \
   mkdir /opt && \
-  #
   echo "download tomcat version ${TOMCAT_VERSION} (https://${APACHE_MIRROR}/apache/tomcat/tomcat-8)" && \
   curl \
     --silent \
@@ -56,10 +50,9 @@ RUN \
     "https://${APACHE_MIRROR}/apache/tomcat/tomcat-8/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz" \
     | gunzip \
     | tar x -C /opt/ && \
-    ln -s /opt/apache-tomcat-${TOMCAT_VERSION} ${CATALINA_HOME} && \
-    ln -s ${CATALINA_HOME}/logs /var/log/jolokia && \
-    rm -rf ${CATALINA_HOME}/webapps/* && \
-  #
+  ln -s /opt/apache-tomcat-${TOMCAT_VERSION} ${CATALINA_HOME} && \
+  ln -s ${CATALINA_HOME}/logs /var/log/jolokia && \
+  rm -rf ${CATALINA_HOME}/webapps/* && \
   echo "download jolokia version ${JOLOKIA_VERSION} (https://repo1.maven.org/maven2/org/jolokia/jolokia-war)" && \
   curl \
     --silent \
@@ -68,9 +61,6 @@ RUN \
     --cacert /etc/ssl/certs/ca-certificates.crt \
     --output ${CATALINA_HOME}/webapps/jolokia.war \
   https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war && \
-  #
-  apk --purge del \
-    curl && \
   rm -f ${CATALINA_HOME}/LICENSE && \
   rm -f ${CATALINA_HOME}/NOTICE && \
   rm -f ${CATALINA_HOME}/RELEASE-NOTES && \
@@ -81,6 +71,12 @@ RUN \
     /var/cache/apk/*
 
 COPY rootfs/ /
+
+HEALTHCHECK \
+  --interval=5s \
+  --timeout=2s \
+  --retries=12 \
+  CMD curl --silent --fail http://localhost:8080/jolokia || exit 1
 
 CMD [ "/init/run.sh" ]
 

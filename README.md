@@ -39,8 +39,8 @@ You can find the Container also at  [DockerHub](https://hub.docker.com/r/bodsch/
 
 # Versions
 
- - tomcat 8.5.14
- - jolokia 1.3.6
+ - tomcat 8.5.24
+ - jolokia 1.3.7
  - openjdk from alpine
 
 
