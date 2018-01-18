@@ -27,6 +27,7 @@ then
   done
 fi
 
+set +x
 
 # set pid file
 CATALINA_PID="${CATALINA_HOME}/temp/catalina.pid"

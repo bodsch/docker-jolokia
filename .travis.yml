@@ -10,3 +10,10 @@ install:
 script:
   - docker ps | grep -q jolokia
 
+after_success:
+  - |
+    [ "${TRAVIS_BRANCH}" == "master" ] && curl \
+      --request POST \
+      --header "Content-Type: application/json"  \
+      --data '{"source_type":"Branch","source_name":"master"}' \
+      https://registry.hub.docker.com/u/bodsch/docker-jolokia/trigger/${DOCKER_HUB_TOKEN}/
