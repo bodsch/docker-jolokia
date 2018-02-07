@@ -5,18 +5,18 @@ EXPOSE 8080 22222
 
 ENV \
   TERM=xterm \
-  BUILD_DATE="2018-01-18" \
+  BUILD_DATE="2018-02-07" \
   APACHE_MIRROR=mirror.synyx.de \
-  TOMCAT_VERSION="8.5.24" \
+  TOMCAT_VERSION="8.5.27" \
   CATALINA_HOME=/opt/tomcat \
-  JOLOKIA_VERSION="1.3.7" \
+  JOLOKIA_VERSION="1.4.0" \
   OPENJDK_VERSION="8.151.12" \
   JAVA_HOME=/usr/lib/jvm/default-jvm \
   PATH=${PATH}:/opt/jdk/bin:${CATALINA_HOME}/bin \
   LANG=C.UTF-8
 
 LABEL \
-  version="1801" \
+  version="1802" \
   maintainer="Bodo Schulz <bodo@boone-schulz.de>" \
   org.label-schema.build-date=${BUILD_DATE} \
   org.label-schema.name="Jolokia Docker Image" \
