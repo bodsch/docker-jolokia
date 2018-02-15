@@ -7,9 +7,9 @@ ENV \
   TERM=xterm \
   BUILD_DATE="2018-02-07" \
   APACHE_MIRROR=mirror.synyx.de \
-  TOMCAT_VERSION="8.5.27" \
+  TOMCAT_VERSION="9.0.5" \
   CATALINA_HOME=/opt/tomcat \
-  JOLOKIA_VERSION="1.4.0" \
+  JOLOKIA_VERSION="1.5.0" \
   OPENJDK_VERSION="8.151.12" \
   JAVA_HOME=/usr/lib/jvm/default-jvm \
   PATH=${PATH}:/opt/jdk/bin:${CATALINA_HOME}/bin \
@@ -41,13 +41,13 @@ RUN \
   echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
   sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' ${JAVA_HOME}/jre/lib/security/java.security && \
   mkdir /opt && \
-  echo "download tomcat version ${TOMCAT_VERSION} (https://${APACHE_MIRROR}/apache/tomcat/tomcat-8)" && \
+  echo "download tomcat version ${TOMCAT_VERSION} (https://${APACHE_MIRROR}/apache/tomcat/tomcat-9)" && \
   curl \
     --silent \
     --location \
     --retry 3 \
     --cacert /etc/ssl/certs/ca-certificates.crt \
-    "https://${APACHE_MIRROR}/apache/tomcat/tomcat-8/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz" \
+    "https://${APACHE_MIRROR}/apache/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz" \
     | gunzip \
     | tar x -C /opt/ && \
   ln -s /opt/apache-tomcat-${TOMCAT_VERSION} ${CATALINA_HOME} && \
