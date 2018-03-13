@@ -5,9 +5,9 @@ EXPOSE 8080 22222
 
 ENV \
   TERM=xterm \
-  BUILD_DATE="2018-02-07" \
+  BUILD_DATE="2018-03-13" \
   APACHE_MIRROR=mirror.synyx.de \
-  TOMCAT_VERSION="9.0.5" \
+  TOMCAT_VERSION="9.0.6" \
   CATALINA_HOME=/opt/tomcat \
   JOLOKIA_VERSION="1.5.0" \
   OPENJDK_VERSION="8.151.12" \
@@ -16,7 +16,7 @@ ENV \
   LANG=C.UTF-8
 
 LABEL \
-  version="1802" \
+  version="1803" \
   maintainer="Bodo Schulz <bodo@boone-schulz.de>" \
   org.label-schema.build-date=${BUILD_DATE} \
   org.label-schema.name="Jolokia Docker Image" \
