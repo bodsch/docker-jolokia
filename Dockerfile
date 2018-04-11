@@ -6,7 +6,7 @@ EXPOSE 8080 22222
 ENV \
   TERM=xterm \
   BUILD_DATE="2018-03-13" \
-  APACHE_MIRROR=mirror.synyx.de \
+  APACHE_MIRROR=archive.apache.org \
   TOMCAT_VERSION="9.0.6" \
   CATALINA_HOME=/opt/tomcat \
   JOLOKIA_VERSION="1.5.0" \
@@ -47,7 +47,7 @@ RUN \
     --location \
     --retry 3 \
     --cacert /etc/ssl/certs/ca-certificates.crt \
-    "https://${APACHE_MIRROR}/apache/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz" \
+    "https://${APACHE_MIRROR}/dist/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz" \
     | gunzip \
     | tar x -C /opt/ && \
   ln -s /opt/apache-tomcat-${TOMCAT_VERSION} ${CATALINA_HOME} && \
