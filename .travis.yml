@@ -14,7 +14,7 @@ jobs:
     - stage: build, test and push docker image
       script:
         - make build
-        - make run
+        - make start
         - docker ps | grep -q jolokia
         - make stop
         - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
