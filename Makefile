@@ -32,20 +32,20 @@ build:	params
 		--build-arg BUILD_VERSION=$(BUILD_VERSION) \
 		--build-arg JOLOKIA_VERSION=${JOLOKIA_VERSION} \
 		--build-arg TOMCAT_VERSION=${TOMCAT_VERSION} \
-		--tag $(NS)/$(REPO):$(VERSION) .
+		--tag $(NS)/$(REPO):${JOLOKIA_VERSION} .
 
 clean:
 	docker rmi \
 		--force \
-		$(NS)/$(REPO):$(VERSION)
+		$(NS)/$(REPO):${JOLOKIA_VERSION}
 
 history:
 	docker history \
-		$(NS)/$(REPO):$(VERSION)
+		$(NS)/$(REPO):${JOLOKIA_VERSION}
 
 push:
 	docker push \
-		$(NS)/$(REPO):$(VERSION)
+		$(NS)/$(REPO):${JOLOKIA_VERSION}
 
 shell:
 	docker run \
@@ -56,7 +56,7 @@ shell:
 		$(PORTS) \
 		$(VOLUMES) \
 		$(ENV) \
-		$(NS)/$(REPO):$(VERSION) \
+		$(NS)/$(REPO):${JOLOKIA_VERSION} \
 		/bin/sh
 
 run:
@@ -66,7 +66,7 @@ run:
 		$(PORTS) \
 		$(VOLUMES) \
 		$(ENV) \
-		$(NS)/$(REPO):$(VERSION)
+		$(NS)/$(REPO):${JOLOKIA_VERSION}
 
 exec:
 	docker exec \
@@ -82,7 +82,7 @@ start:
 		$(PORTS) \
 		$(VOLUMES) \
 		$(ENV) \
-		$(NS)/$(REPO):$(VERSION)
+		$(NS)/$(REPO):${JOLOKIA_VERSION}
 
 stop:
 	docker stop \
@@ -93,7 +93,7 @@ rm:
 		$(NAME)-$(INSTANCE)
 
 release: build
-	make push -e VERSION=$(VERSION)
+	make push -e VERSION=${JOLOKIA_VERSION}
 
 default: build
 

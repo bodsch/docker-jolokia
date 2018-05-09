@@ -12,8 +12,8 @@ ENV \
   TERM=xterm \
   APACHE_MIRROR=archive.apache.org \
   CATALINA_HOME=/opt/tomcat \
-  JOLOKIA_VERSION=${JOLOKIA_VERSION} \
-  TOMCAT_VERSION=${TOMCAT_VERSION} \
+  JOLOKIA_VERSION=$JOLOKIA_VERSION \
+  TOMCAT_VERSION=$TOMCAT_VERSION \
   OPENJDK_VERSION="8.151.12" \
   JAVA_HOME=/usr/lib/jvm/default-jvm \
   PATH=${PATH}:/opt/jdk/bin:${CATALINA_HOME}/bin \
@@ -28,7 +28,7 @@ LABEL \
   org.label-schema.url="https://jolokia.org" \
   org.label-schema.vcs-url="https://github.com/bodsch/docker-jolokia" \
   org.label-schema.vendor="Bodo Schulz" \
-  org.label-schema.version=${JOLOKIA_VERSION} \
+  org.label-schema.version=$JOLOKIA_VERSION \
   org.label-schema.schema-version="1.0" \
   com.microscaling.docker.dockerfile="/Dockerfile" \
   com.microscaling.license="GNU General Public License v3.0"
@@ -45,26 +45,26 @@ RUN \
   echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
   sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' ${JAVA_HOME}/jre/lib/security/java.security && \
   mkdir /opt && \
-  echo "download tomcat version ${TOMCAT_VERSION} (https://${APACHE_MIRROR}/dist/tomcat/tomcat-9)" && \
+  echo "download tomcat version $TOMCAT_VERSION (https://$APACHE_MIRROR/dist/tomcat/tomcat-9)" && \
   curl \
     --silent \
     --location \
     --retry 3 \
     --cacert /etc/ssl/certs/ca-certificates.crt \
-    "https://${APACHE_MIRROR}/dist/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz" \
+    https://$APACHE_MIRROR/dist/tomcat/tomcat-9/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz \
     | gunzip \
     | tar x -C /opt/ && \
-  ln -s /opt/apache-tomcat-${TOMCAT_VERSION} ${CATALINA_HOME} && \
+  ln -s /opt/apache-tomcat-$TOMCAT_VERSION ${CATALINA_HOME} && \
   ln -s ${CATALINA_HOME}/logs /var/log/jolokia && \
   rm -rf ${CATALINA_HOME}/webapps/* && \
-  echo "download jolokia version ${JOLOKIA_VERSION} (https://repo1.maven.org/maven2/org/jolokia/jolokia-war)" && \
+  echo "download jolokia version $JOLOKIA_VERSION (https://repo1.maven.org/maven2/org/jolokia/jolokia-war)" && \
   curl \
     --silent \
     --location \
     --retry 3 \
     --cacert /etc/ssl/certs/ca-certificates.crt \
     --output ${CATALINA_HOME}/webapps/jolokia.war \
-  https://repo1.maven.org/maven2/org/jolokia/jolokia-war/${JOLOKIA_VERSION}/jolokia-war-${JOLOKIA_VERSION}.war && \
+  https://repo1.maven.org/maven2/org/jolokia/jolokia-war/$JOLOKIA_VERSION/jolokia-war-$JOLOKIA_VERSION.war && \
   rm -f ${CATALINA_HOME}/LICENSE && \
   rm -f ${CATALINA_HOME}/NOTICE && \
   rm -f ${CATALINA_HOME}/RELEASE-NOTES && \
