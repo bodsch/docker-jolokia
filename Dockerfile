@@ -8,11 +8,12 @@ ARG BUILD_VERSION
 ARG JOLOKIA_VERSION
 ARG TOMCAT_VERSION
 
-
 ENV \
   TERM=xterm \
   APACHE_MIRROR=archive.apache.org \
   CATALINA_HOME=/opt/tomcat \
+  JOLOKIA_VERSION=${JOLOKIA_VERSION} \
+  TOMCAT_VERSION=${TOMCAT_VERSION} \
   OPENJDK_VERSION="8.151.12" \
   JAVA_HOME=/usr/lib/jvm/default-jvm \
   PATH=${PATH}:/opt/jdk/bin:${CATALINA_HOME}/bin \
