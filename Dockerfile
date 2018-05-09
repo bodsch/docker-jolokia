@@ -3,20 +3,23 @@ FROM alpine:3.7
 
 EXPOSE 8080 22222
 
+ARG BUILD_DATE
+ARG BUILD_VERSION
+ARG JOLOKIA_VERSION
+ARG TOMCAT_VERSION
+
+
 ENV \
   TERM=xterm \
-  BUILD_DATE="2018-03-13" \
   APACHE_MIRROR=archive.apache.org \
-  TOMCAT_VERSION="9.0.6" \
   CATALINA_HOME=/opt/tomcat \
-  JOLOKIA_VERSION="1.5.0" \
   OPENJDK_VERSION="8.151.12" \
   JAVA_HOME=/usr/lib/jvm/default-jvm \
   PATH=${PATH}:/opt/jdk/bin:${CATALINA_HOME}/bin \
   LANG=C.UTF-8
 
 LABEL \
-  version="1803" \
+  version=${BUILD_VERSION} \
   maintainer="Bodo Schulz <bodo@boone-schulz.de>" \
   org.label-schema.build-date=${BUILD_DATE} \
   org.label-schema.name="Jolokia Docker Image" \
@@ -41,7 +44,7 @@ RUN \
   echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
   sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' ${JAVA_HOME}/jre/lib/security/java.security && \
   mkdir /opt && \
-  echo "download tomcat version ${TOMCAT_VERSION} (https://${APACHE_MIRROR}/apache/tomcat/tomcat-9)" && \
+  echo "download tomcat version ${TOMCAT_VERSION} (https://${APACHE_MIRROR}/dist/tomcat/tomcat-9)" && \
   curl \
     --silent \
     --location \
