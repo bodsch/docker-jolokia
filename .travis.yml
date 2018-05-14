@@ -5,9 +5,11 @@ services:
 
 env:
   global:
-    - JOLOKIA_VERSION=${JOLOKIA_VERSION:-1.5.0}
-    - TOMCAT_VERSION=${TOMCAT_VERSION:-9.0.8}
     - BUILD_DATE=$(date +"%Y-%m-%d")
+    - TOMCAT_VERSION=${TOMCAT_VERSION:-9.0.8}
+    - JOLOKIA_VERSION=${JOLOKIA_VERSION:-1.5.0}
+    - HAWTIO_VERSION=${HAWTIO_VERSION:-1.5.9}
+
 
 jobs:
   include:

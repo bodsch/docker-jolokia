@@ -1,13 +1,25 @@
 docker-jolokia
 ==============
 
-Minimal Image with Apache Tomcat8, openjdk8-jre-base and jolokia.
+Minimal Image with Apache Tomcat9, openjdk8-jre-base, [jolokia](https://jolokia.org/) and [hawtio](http://hawt.io/).
+
+## jolokia
+
+> Jolokia is remote JMX with JSON over HTTP.
+
+> It is fast, simple, polyglot and has unique features. It's JMX on Capsaicin.
+
+## hawtio
+
+> hawtio has lots of plugins such as: a git-based Dashboard and Wiki, logs, health, JMX, OSGi,
+
+> Apache ActiveMQ, Apache Camel, Apache OpenEJB, Apache Tomcat, Jetty, JBoss and Fuse Fabric
 
 # Status
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/bodsch/docker-jolokia.svg?branch)][hub]
-[![Image Size](https://images.microbadger.com/badges/image/bodsch/docker-jolokia.svg?branch)][microbadger]
-[![Build Status](https://travis-ci.org/bodsch/docker-jolokia.svg?branch)][travis]
+[![Docker Pulls](https://img.shields.io/docker/pulls/bodsch/docker-jolokia.svg)][hub]
+[![Image Size](https://images.microbadger.com/badges/image/bodsch/docker-jolokia.svg)][microbadger]
+[![Build Status](https://travis-ci.org/bodsch/docker-jolokia.svg)][travis]
 
 [hub]: https://hub.docker.com/r/bodsch/docker-jolokia/
 [microbadger]: https://microbadger.com/images/bodsch/docker-jolokia
@@ -39,9 +51,11 @@ You can find the Container also at  [DockerHub](https://hub.docker.com/r/bodsch/
 
 # Versions
 
- - tomcat 8.5.24
- - jolokia 1.3.7
- - openjdk from alpine
+- tomcat 9.0.6.0
+- openjdk from alpine
+- jolokia 1.5.0
+- hawtio 1.5.9
+
 
 
 # Test
@@ -54,5 +68,5 @@ You can find the Container also at  [DockerHub](https://hub.docker.com/r/bodsch/
 
 # Ports
 
-* 8080
-
+- 8080
+- 22222

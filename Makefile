@@ -10,8 +10,9 @@ INSTANCE = default
 
 BUILD_DATE := $(shell date +%Y-%m-%d)
 BUILD_VERSION := $(shell date +%y%m)
+TOMCAT_VERSION ?= 9.0.8
 JOLOKIA_VERSION ?= 1.5.0
-TOMCAT_VERSION ?= 9.0.6
+HAWTIO_VERSION ?= 1.5.9
 
 .PHONY: build push shell run start stop rm release
 
@@ -19,8 +20,9 @@ default: build
 
 params:
 	@echo ""
-	@echo " JOLOKIA_VERSION: ${JOLOKIA_VERSION}"
 	@echo " TOMCAT_VERSION : ${TOMCAT_VERSION}"
+	@echo " JOLOKIA_VERSION: ${JOLOKIA_VERSION}"
+	@echo " HAWTIO_VERSION : ${HAWTIO_VERSION}"
 	@echo " BUILD_DATE     : $(BUILD_DATE)"
 	@echo ""
 
@@ -30,8 +32,9 @@ build:	params
 		--compress \
 		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--build-arg BUILD_VERSION=$(BUILD_VERSION) \
-		--build-arg JOLOKIA_VERSION=${JOLOKIA_VERSION} \
 		--build-arg TOMCAT_VERSION=${TOMCAT_VERSION} \
+		--build-arg JOLOKIA_VERSION=${JOLOKIA_VERSION} \
+		--build-arg HAWTIO_VERSION=${HAWTIO_VERSION} \
 		--tag $(NS)/$(REPO):${JOLOKIA_VERSION} .
 
 clean:
