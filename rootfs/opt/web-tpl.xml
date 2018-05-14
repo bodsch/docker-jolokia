@@ -126,7 +126,7 @@
         option can be overridden by a query parameter of the same name.
       </description>
       <param-name>serializeException</param-name>
-      <param-value>true</param-value>
+      <param-value>false</param-value>
     </init-param>
 
     <init-param>
@@ -146,7 +146,7 @@
         environment variable "JOLOKIA_DISCOVERY_AGENT_URL".
       </description>
       <param-name>discoveryEnabled</param-name>
-      <param-value>true</param-value>
+      <param-value>false</param-value>
     </init-param>
 
     <load-on-startup>1</load-on-startup>

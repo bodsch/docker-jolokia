@@ -6,5 +6,5 @@ VOLUMES = \
   --volume /var/log/docker:/var/log
 
 ENV = \
-  --env DEBUG="true" \
+  --env DEBUG="false" \
   --env JOLOKIA_BASIC_AUTH="jolokia:passed,spec:test"

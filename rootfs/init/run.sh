@@ -8,7 +8,9 @@ enable_proxy() {
 
   if ( [ -d ${CATALINA_HOME}/webapps/jolokia ] && [ -f /opt/web-tpl.xml ] )
   then
+    mv ${CATALINA_HOME}/webapps/jolokia/WEB-INF/web.xml ${CATALINA_HOME}/webapps/jolokia/WEB-INF/web.xml-DIST
     cp /opt/web-tpl.xml ${CATALINA_HOME}/webapps/jolokia/WEB-INF/web.xml
+    # diff ${CATALINA_HOME}/webapps/jolokia/WEB-INF/web.xml-DIST ${CATALINA_HOME}/webapps/jolokia/WEB-INF/web.xml
   fi
 }
 
