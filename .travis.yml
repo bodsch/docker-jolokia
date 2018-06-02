@@ -10,14 +10,13 @@ env:
     - JOLOKIA_VERSION=${JOLOKIA_VERSION:-1.5.0}
     - HAWTIO_VERSION=${HAWTIO_VERSION:-1.5.9}
 
-
 jobs:
   include:
     - stage: build, test and push docker image
       script:
         - make build
         - make start
-        - docker ps | grep -q jolokia
+        - tests/test.sh
         - make stop
         - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
         - docker push ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION}
