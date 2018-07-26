@@ -113,6 +113,20 @@ EOF
   echo "jolokia used heap memory '${jolokia_used_heap_memory}'"
 }
 
+check_hawtio() {
+
+  http_response_code=$(curl \
+      --write-out %{response_code} \
+      --silent \
+      --output /dev/null \
+      http://localhost:8080/hawtio/)
+
+  if [[ ${http_response_code} -eq 200 ]]
+  then
+    echo "hawtio available"
+  fi
+}
+
 inspect() {
 
   echo "inspect needed containers"
@@ -130,5 +144,6 @@ inspect
 
 wait_for_jolokia
 api_request
+check_hawtio
 
 exit 0

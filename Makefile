@@ -8,11 +8,11 @@ REPO     = docker-jolokia
 NAME     = jolokia
 INSTANCE = default
 
-BUILD_DATE := $(shell date +%Y-%m-%d)
-BUILD_VERSION := $(shell date +%y%m)
-TOMCAT_VERSION ?= 9.0.8
-JOLOKIA_VERSION ?= 1.5.0
-HAWTIO_VERSION ?= 1.5.9
+BUILD_DATE      := $(shell date +%Y-%m-%d)
+BUILD_VERSION   := $(shell date +%y%m)
+TOMCAT_VERSION  ?= 9.0.10
+JOLOKIA_VERSION ?= 1.6.0
+HAWTIO_VERSION  ?= 2.0.2
 
 .PHONY: build push shell run start stop rm release
 
