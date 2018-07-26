@@ -6,13 +6,14 @@ services:
 env:
   global:
     - BUILD_DATE=$(date +"%Y-%m-%d")
-    - TOMCAT_VERSION=${TOMCAT_VERSION:-9.0.8}
-    - JOLOKIA_VERSION=${JOLOKIA_VERSION:-1.5.0}
-    - HAWTIO_VERSION=${HAWTIO_VERSION:-1.5.9}
+    - BUILD_VERSION=$(date +"%y%m")
+    - TOMCAT_VERSION=${TOMCAT_VERSION:-9.0.10}
+    - JOLOKIA_VERSION=${JOLOKIA_VERSION:-1.6.0}
+    - HAWTIO_VERSION=${HAWTIO_VERSION:-2.0.2}
 
 jobs:
   include:
-    - stage: build, test and push docker image
+    - stage: build
       script:
         - make build
         - make start
@@ -22,3 +23,19 @@ jobs:
         - docker push ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION}
         - docker tag ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION} ${DOCKER_USERNAME}/docker-jolokia:latest
         - docker push ${DOCKER_USERNAME}/docker-jolokia:latest
+
+    - stage: build and test
+      script:
+        - make build
+        - make start
+        - tests/test.sh
+        - make stop
+
+    - stage: build and push docker image
+      script:
+        - make build
+        - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
+        - docker push ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION}
+        - docker tag ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION} ${DOCKER_USERNAME}/docker-jolokia:latest
+        - docker push ${DOCKER_USERNAME}/docker-jolokia:latest
+        - docker logout
