@@ -16,13 +16,6 @@ jobs:
     - stage: build
       script:
         - make build
-        - make start
-        - tests/test.sh
-        - make stop
-        - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
-        - docker push ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION}
-        - docker tag ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION} ${DOCKER_USERNAME}/docker-jolokia:latest
-        - docker push ${DOCKER_USERNAME}/docker-jolokia:latest
 
     - stage: build and test
       script:
@@ -36,6 +29,6 @@ jobs:
         - make build
         - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
         - docker push ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION}
-        - docker tag ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION} ${DOCKER_USERNAME}/docker-jolokia:latest
+        - docker tag  ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION} ${DOCKER_USERNAME}/docker-jolokia:latest
         - docker push ${DOCKER_USERNAME}/docker-jolokia:latest
         - docker logout
