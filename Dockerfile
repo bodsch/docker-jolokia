@@ -45,13 +45,13 @@ RUN \
   echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
   sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' ${JAVA_HOME}/jre/lib/security/java.security && \
   mkdir /opt && \
-  echo "download tomcat version $TOMCAT_VERSION (https://mirror.synyx.de/apache/tomcat/tomcat-9/)" && \
+  echo "download tomcat version $TOMCAT_VERSION (https://archive.apache.org/dist/tomcat/tomcat-9/)" && \
   curl \
     --silent \
     --location \
     --retry 3 \
     --cacert /etc/ssl/certs/ca-certificates.crt \
-    https://mirror.synyx.de/apache/tomcat/tomcat-9/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz \
+    https://archive.apache.org/dist/tomcat/tomcat-9/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz \
     | gunzip \
     | tar x -C /opt/ && \
   ln -s /opt/apache-tomcat-$TOMCAT_VERSION ${CATALINA_HOME} && \
