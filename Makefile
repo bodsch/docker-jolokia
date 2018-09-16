@@ -10,9 +10,9 @@ INSTANCE = default
 
 BUILD_DATE      := $(shell date +%Y-%m-%d)
 BUILD_VERSION   := $(shell date +%y%m)
-TOMCAT_VERSION  ?= 9.0.10
+TOMCAT_VERSION  ?= 9.0.12
 JOLOKIA_VERSION ?= 1.6.0
-HAWTIO_VERSION  ?= 2.0.2
+HAWTIO_VERSION  ?= 2.0.3
 
 .PHONY: build push shell run start stop rm release
 
