@@ -7,9 +7,9 @@ env:
   global:
     - BUILD_DATE=$(date +"%Y-%m-%d")
     - BUILD_VERSION=$(date +"%y%m")
-    - TOMCAT_VERSION=${TOMCAT_VERSION:-9.0.10}
+    - TOMCAT_VERSION=${TOMCAT_VERSION:-9.0.14}
     - JOLOKIA_VERSION=${JOLOKIA_VERSION:-1.6.0}
-    - HAWTIO_VERSION=${HAWTIO_VERSION:-2.0.2}
+    - HAWTIO_VERSION=${HAWTIO_VERSION:-2.4.0}
 
 jobs:
   include:
@@ -21,14 +21,17 @@ jobs:
       script:
         - make build
         - make start
-        - tests/test.sh
+        - make test
         - make stop
 
     - stage: build and push docker image
       script:
         - make build
         - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
+        #
+        - docker tag  ${USER}/jolokia:latest ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION}
         - docker push ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION}
+        #
         - docker tag  ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION} ${DOCKER_USERNAME}/docker-jolokia:latest
         - docker push ${DOCKER_USERNAME}/docker-jolokia:latest
         - docker logout

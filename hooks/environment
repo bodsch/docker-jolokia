@@ -1,0 +1,14 @@
+
+DATA_DIR="${PWD}/data"
+
+PORTS="
+  --publish 8080:8080 \
+  --publish 22222:22222"
+
+VOLUMES=""
+#  --volume ${DATA_DIR}/log:/var/log \
+#  --volume ${DATA_DIR}/srv:/srv"
+
+ENV="
+  --env DEBUG=false \
+  --env JOLOKIA_BASIC_AUTH=jolokia:passed,spec:test"

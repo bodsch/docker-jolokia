@@ -39,7 +39,6 @@ wait_for_jolokia() {
     echo "could not connect to the jolokia service instance '${JOLOKIA_MASTER}'"
     exit 1
   fi
-#  sleep 5s
 }
 
 api_request() {
@@ -69,7 +68,6 @@ api_request() {
     --insecure \
     http://${JOLOKIA_MASTER}:${JOLOKIA_API_PORT}/jolokia/list)
 
-#  echo $code | jq
   if [[ $? -eq 0 ]]
   then
     echo "api request for list are successfull"
@@ -97,8 +95,6 @@ EOF
     --insecure \
     --data @memory.json \
     http://${JOLOKIA_MASTER}:${JOLOKIA_API_PORT}/jolokia)
-
-#  echo $code | jq
 
   if [[ $? -eq 0 ]]
   then
@@ -130,9 +126,8 @@ check_hawtio() {
 inspect() {
 
   echo "inspect needed containers"
-  for d in jolokia-default
+  for d in $(docker ps | tail -n +2 | awk  '{print($1)}')
   do
-    # docker inspect --format "{{lower .Name}}" ${d}
     docker inspect --format '{{with .State}} {{$.Name}} has pid {{.Pid}} {{end}}' ${d}
   done
 }
@@ -140,10 +135,19 @@ inspect() {
 echo "wait 10 seconds for start"
 sleep 10s
 
-inspect
+if [[ $(docker ps | tail -n +2 | wc -l) -eq 1 ]]
+then
+  inspect
 
-wait_for_jolokia
-api_request
-check_hawtio
+  wait_for_jolokia
+  api_request
+  check_hawtio
 
-exit 0
+  exit 0
+else
+  echo "please run "
+  echo " make start"
+  echo "before"
+
+  exit 1
+fi

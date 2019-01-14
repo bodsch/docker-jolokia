@@ -1,103 +1,47 @@
+export GIT_SHA1          := $(shell git rev-parse --short HEAD)
+export DOCKER_IMAGE_NAME := jolokia
+export DOCKER_NAME_SPACE := ${USER}
+export DOCKER_VERSION    ?= latest
+export BUILD_DATE        := $(shell date +%Y-%m-%d)
+export BUILD_VERSION     := $(shell date +%y%m)
+export BUILD_TYPE        ?= stable
+export TOMCAT_VERSION    ?= 9.0.14
+export JOLOKIA_VERSION   ?= 1.6.0
+export HAWTIO_VERSION    ?= 2.4.0
 
-include env_make
 
-NS       = bodsch
-VERSION ?= latest
-
-REPO     = docker-jolokia
-NAME     = jolokia
-INSTANCE = default
-
-BUILD_DATE      := $(shell date +%Y-%m-%d)
-BUILD_VERSION   := $(shell date +%y%m)
-TOMCAT_VERSION  ?= 9.0.13
-JOLOKIA_VERSION ?= 1.6.0
-HAWTIO_VERSION  ?= 2.3.0
-
-.PHONY: build push shell run start stop rm release
+.PHONY: build shell run exec start stop clean compose-file
 
 default: build
 
-params:
-	@echo ""
-	@echo " TOMCAT_VERSION : ${TOMCAT_VERSION}"
-	@echo " JOLOKIA_VERSION: ${JOLOKIA_VERSION}"
-	@echo " HAWTIO_VERSION : ${HAWTIO_VERSION}"
-	@echo " BUILD_DATE     : $(BUILD_DATE)"
-	@echo ""
-
-build:	params
-	docker build \
-		--force-rm \
-		--compress \
-		--build-arg BUILD_DATE=$(BUILD_DATE) \
-		--build-arg BUILD_VERSION=$(BUILD_VERSION) \
-		--build-arg TOMCAT_VERSION=${TOMCAT_VERSION} \
-		--build-arg JOLOKIA_VERSION=${JOLOKIA_VERSION} \
-		--build-arg HAWTIO_VERSION=${HAWTIO_VERSION} \
-		--tag $(NS)/$(REPO):${JOLOKIA_VERSION} .
-
-clean:
-	docker rmi \
-		--force \
-		$(NS)/$(REPO):${JOLOKIA_VERSION}
-
-history:
-	docker history \
-		$(NS)/$(REPO):${JOLOKIA_VERSION}
-
-push:
-	docker push \
-		$(NS)/$(REPO):${JOLOKIA_VERSION}
+build:
+	@hooks/build
 
 shell:
-	docker run \
-		--rm \
-		--name $(NAME)-$(INSTANCE) \
-		--interactive \
-		--tty \
-		$(PORTS) \
-		$(VOLUMES) \
-		$(ENV) \
-		$(NS)/$(REPO):${JOLOKIA_VERSION} \
-		/bin/sh
+	@hooks/shell
 
 run:
-	docker run \
-		--rm \
-		--name $(NAME)-$(INSTANCE) \
-		$(PORTS) \
-		$(VOLUMES) \
-		$(ENV) \
-		$(NS)/$(REPO):${JOLOKIA_VERSION}
+	@hooks/run
 
 exec:
-	docker exec \
-		--interactive \
-		--tty \
-		$(NAME)-$(INSTANCE) \
-		/bin/sh
+	@hooks/exec
 
 start:
-	docker run \
-		--detach \
-		--name $(NAME)-$(INSTANCE) \
-		$(PORTS) \
-		$(VOLUMES) \
-		$(ENV) \
-		$(NS)/$(REPO):${JOLOKIA_VERSION}
+	@hooks/start
 
 stop:
-	docker stop \
-		$(NAME)-$(INSTANCE)
+	@hooks/stop
 
-rm:
-	docker rm \
-		$(NAME)-$(INSTANCE)
+clean:
+	@hooks/clean
 
-release: build
-	make push -e VERSION=${JOLOKIA_VERSION}
+compose-file:
+	@hooks/compose-file
 
-default: build
+linter:
+	@tests/linter.sh
 
+integration_test:
+	@tests/integration_test.sh
 
+test: linter integration_test

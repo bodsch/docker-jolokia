@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Custom build for Docker Hub
+# see: https://medium.com/microscaling-systems/labelling-automated-builds-on-docker-hub-f3d073fb8e1
+
+echo ""
+echo " TOMCAT_VERSION : ${TOMCAT_VERSION}"
+echo " JOLOKIA_VERSION: ${JOLOKIA_VERSION}"
+echo " HAWTIO_VERSION : ${HAWTIO_VERSION}"
+echo " BUILD_DATE     : ${BUILD_DATE}"
+echo " GIT_SHA1       : ${GIT_SHA1}"
+echo ""
+
+docker build \
+  --file Dockerfile \
+  --rm \
+  --compress \
+  --build-arg VCS_REF=${GIT_SHA1} \
+  --build-arg BUILD_DATE=${BUILD_DATE} \
+  --build-arg BUILD_VERSION=${BUILD_VERSION} \
+  --build-arg TOMCAT_VERSION=${TOMCAT_VERSION} \
+  --build-arg JOLOKIA_VERSION=${JOLOKIA_VERSION} \
+  --build-arg HAWTIO_VERSION=${HAWTIO_VERSION} \
+  --tag ${DOCKER_NAME_SPACE}/${DOCKER_IMAGE_NAME}:${DOCKER_VERSION} .
