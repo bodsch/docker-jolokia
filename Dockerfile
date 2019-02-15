@@ -1,5 +1,5 @@
 
-FROM alpine:3.8
+FROM alpine:3.9
 
 EXPOSE 8080 22222
 
@@ -30,7 +30,7 @@ RUN \
   echo "export LANG=${LANG}" > /etc/profile.d/locale.sh && \
   echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
   sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' "${JAVA_HOME}/jre/lib/security/java.security" && \
-  mkdir /opt && \
+  [ -d /opt ] || mkdir /opt && \
   echo "download tomcat version $TOMCAT_VERSION (https://archive.apache.org/dist/tomcat/tomcat-9/)" && \
   curl \
     --silent \

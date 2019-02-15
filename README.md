@@ -63,10 +63,10 @@ You can find the Container also at  [DockerHub](https://hub.docker.com/r/bodsch/
 
 # Versions
 
-- tomcat 9.0.10
+- tomcat 9.0.16
 - openjdk from alpine
 - jolokia 1.6.0
-- hawtio 2.0.2
+- hawtio 2.5.0
 
 
 # Tests
