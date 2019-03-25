@@ -50,7 +50,7 @@ api_request() {
     --user ${JOLOKIA_API_USER}:${JOLOKIA_API_PASSWORD} \
     --header 'Accept: application/json' \
     --insecure \
-    http://${JOLOKIA_MASTER}:${JOLOKIA_API_PORT}/jolokia)
+    http://${JOLOKIA_MASTER}:${JOLOKIA_API_PORT}/jolokia/)
 
   if [[ $? -eq 0 ]]
   then
@@ -94,7 +94,7 @@ EOF
     --header 'Content-Type: application/json' \
     --insecure \
     --data @memory.json \
-    http://${JOLOKIA_MASTER}:${JOLOKIA_API_PORT}/jolokia)
+    http://${JOLOKIA_MASTER}:${JOLOKIA_API_PORT}/jolokia/)
 
   if [[ $? -eq 0 ]]
   then
@@ -125,18 +125,27 @@ check_hawtio() {
 
 inspect() {
 
+  echo ""
   echo "inspect needed containers"
   for d in $(docker ps | tail -n +2 | awk  '{print($1)}')
   do
-    docker inspect --format '{{with .State}} {{$.Name}} has pid {{.Pid}} {{end}}' ${d}
+    # docker inspect --format "{{lower .Name}}" ${d}
+    c=$(docker inspect --format '{{with .State}} {{$.Name}} has pid {{.Pid}} {{end}}' "${d}")
+    s=$(docker inspect --format '{{json .State.Health }}' "${d}" | jq --raw-output .Status)
+
+    printf "%-40s - %s\n"  "${c}" "${s}"
   done
 }
 
-echo "wait 10 seconds for start"
-sleep 10s
+#echo "wait 10 seconds for start"
+#sleep 10s
 
-if [[ $(docker ps | tail -n +2 | wc -l) -eq 1 ]]
+running_containers=$(docker ps | tail -n +2  | wc -l)
+
+if [[ ${running_containers} -eq 1 ]] || [[ ${running_containers} -gt 1 ]]
 then
+#if [[ $(docker ps | tail -n +2 | wc -l) -eq 1 ]]
+#then
   inspect
 
   wait_for_jolokia

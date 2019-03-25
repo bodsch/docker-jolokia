@@ -15,11 +15,11 @@ jobs:
   include:
     - stage: build
       script:
-        - make build
+        - make
 
     - stage: build and test
       script:
-        - make build
+        - make
         - make start
         - make test
         - make stop

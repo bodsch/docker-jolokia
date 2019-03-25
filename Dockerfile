@@ -1,5 +1,5 @@
 
-FROM alpine:3.8
+FROM alpine:3.9
 
 EXPOSE 8080 22222
 
@@ -25,12 +25,13 @@ RUN \
   apk upgrade --quiet --no-cache && \
   apk add     --quiet --no-cache \
     curl \
+    nss \
     openjdk8-jre-base \
     tomcat-native && \
   echo "export LANG=${LANG}" > /etc/profile.d/locale.sh && \
   echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
   sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' "${JAVA_HOME}/jre/lib/security/java.security" && \
-  mkdir /opt && \
+  [ -d /opt ] || mkdir /opt && \
   echo "download tomcat version $TOMCAT_VERSION (https://archive.apache.org/dist/tomcat/tomcat-9/)" && \
   curl \
     --silent \
@@ -84,7 +85,7 @@ HEALTHCHECK \
   --interval=5s \
   --timeout=2s \
   --retries=12 \
-  CMD curl --silent --fail http://localhost:8080/jolokia || exit 1
+  CMD /init/healthcheck.sh
 
 # ---------------------------------------------------------------------------------------------------------------------
 

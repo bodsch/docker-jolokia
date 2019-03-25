@@ -10,12 +10,23 @@ log_output() {
 
   level="${1}"
   message="${2}"
-  printf "$(date +"[%Y-%m-%d %H:%M:%S]") %b %b\n" "${level}"  "${message}"
+
+  if [ -z "${level}" ]
+  then
+    printf "$(date +"[%Y-%m-%d %H:%M:%S]") %b\n" "${message}"
+  else
+    printf "$(date +"[%Y-%m-%d %H:%M:%S]") %b %b\n" "${level}"  "${message}"
+  fi
 }
 
 log_info() {
   message="${1}"
-  log_output "${NC}" "${message}"
+  log_output "" "${message}"
+}
+
+log_INFO() {
+  message="${1}"
+  log_output "" "${BOLD}${message}${NC}"
 }
 
 log_warn() {
@@ -33,3 +44,7 @@ log_error() {
   log_output "${RED}${BOLD}ERROR${NC}" "${message}"
 }
 
+log_debug() {
+  message="${1}"
+  log_output "${BOLD}DEBUG${NC}" "${message}"
+}
