@@ -1,37 +1,31 @@
 sudo: required
-
 services:
-  - docker
-
+- docker
 env:
   global:
-    - BUILD_DATE=$(date +"%Y-%m-%d")
-    - BUILD_VERSION=$(date +"%y%m")
-    - TOMCAT_VERSION=${TOMCAT_VERSION:-9.0.16}
-    - JOLOKIA_VERSION=${JOLOKIA_VERSION:-1.6.0}
-    - HAWTIO_VERSION=${HAWTIO_VERSION:-2.5.0}
-
+  - BUILD_DATE=$(date +"%Y-%m-%d")
+  - BUILD_VERSION=$(date +"%y%m")
+  - TOMCAT_VERSION=${TOMCAT_VERSION:-9.0.16}
+  - JOLOKIA_VERSION=${JOLOKIA_VERSION:-1.6.0}
+  - HAWTIO_VERSION=${HAWTIO_VERSION:-2.5.0}
+  - secure: s/22pZOBapNz9I8GUDSaa8jHobROiJP/iPoxLgyyaoGV35pRLCUD/twnAO1vbicdoNEWllI3kcWxgRvN0tcw5JiUf3ZdOMcw3EuLJHrWD5esHLJ/vXX9ysiVdh3JQU8At+XIGeJ6P0J3QuDTKWm83HbCbPhPTUbQAky10yyRzCeoMwh4Lx6G0golKLlUT4SzmYTUh2p3tWdA8UUTwdq3wf3GQRs+eRXutFCaXZS/IKiWxj/cKM2CmatgvEy2kyG7oPNL9w8aXJNmLAm9Vdj8FAO7iN7sPhmX2LUgBpQgRyY04k+w/W+C5Wt+5+k3vn18R6JesD2JlEoZkvMh5dJvb/Y1hU75Z0Hek3h+GxqMHvYCLHRS/oANe0SU6jtUyICeKfLKCRpLmXpwAaoz8tM0lD/c1D+WxrtU95PiLFuxBnJI3hO+AchNhc0zbkFnrm0tttw0lu4yxmg+gcZe8vmMi5tHq3jXkSyw5VyX3ONrTL3wxgQYCvqdpFP3R5lL7STWs3qcMNe4J1xNcub6ncRrrKnKHSJfy2OluUE+OY5CceNbNmLjPxWEr08w4pClrmtl09MJQW0JhSH/0gmVr78xQ1OcKQOLgzSkt0u7gnS9R8yo2ONu+WtNTrhZFUsROaLycUVhXtbFynhmkXsVCkvYo0w3D+emLW4MRqUfWDTJQo8=
 jobs:
   include:
-    - stage: build
-      script:
-        - make
-
-    - stage: build and test
-      script:
-        - make
-        - make start
-        - make test
-        - make stop
-
-    - stage: build and push docker image
-      script:
-        - make build
-        - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
-        #
-        - docker tag  ${USER}/jolokia:latest ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION}
-        - docker push ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION}
-        #
-        - docker tag  ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION} ${DOCKER_USERNAME}/docker-jolokia:latest
-        - docker push ${DOCKER_USERNAME}/docker-jolokia:latest
-        - docker logout
+  - stage: build
+    script:
+    - make
+  - stage: build and test
+    script:
+    - make
+    - make start
+    - make test
+    - make stop
+  - stage: build and push docker image
+    script:
+    - make build
+    - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
+    - docker tag  ${USER}/jolokia:latest ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION}
+    - docker push ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION}
+    - docker tag  ${DOCKER_USERNAME}/docker-jolokia:${JOLOKIA_VERSION} ${DOCKER_USERNAME}/docker-jolokia:latest
+    - docker push ${DOCKER_USERNAME}/docker-jolokia:latest
+    - docker logout
