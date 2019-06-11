@@ -46,11 +46,10 @@ api_request() {
   local jolokia_version=
 
   code=$(curl \
-    --silent \
     --user ${JOLOKIA_API_USER}:${JOLOKIA_API_PASSWORD} \
     --header 'Accept: application/json' \
     --insecure \
-    http://${JOLOKIA_MASTER}:${JOLOKIA_API_PORT}/jolokia/)
+    http://${JOLOKIA_MASTER}:${JOLOKIA_API_PORT}/jolokia)
 
   if [[ $? -eq 0 ]]
   then
@@ -94,7 +93,7 @@ EOF
     --header 'Content-Type: application/json' \
     --insecure \
     --data @memory.json \
-    http://${JOLOKIA_MASTER}:${JOLOKIA_API_PORT}/jolokia/)
+    http://${JOLOKIA_MASTER}:${JOLOKIA_API_PORT}/jolokia)
 
   if [[ $? -eq 0 ]]
   then
@@ -144,8 +143,7 @@ running_containers=$(docker ps | tail -n +2  | wc -l)
 
 if [[ ${running_containers} -eq 1 ]] || [[ ${running_containers} -gt 1 ]]
 then
-#if [[ $(docker ps | tail -n +2 | wc -l) -eq 1 ]]
-#then
+
   inspect
 
   wait_for_jolokia

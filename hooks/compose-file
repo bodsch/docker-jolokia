@@ -9,11 +9,14 @@ cat << EOF > .env
 
 BUILD_DATE=${BUILD_DATE}
 BUILD_VERSION=${BUILD_VERSION}
-MARIADB_SYSTEM_USER=root
-MARIADB_ROOT_PASSWORD=vYUQ14SGVrJRi69PsujC
+TOMCAT_VERSION=${TOMCAT_VERSION}
+JOLOKIA_VERSION=${JOLOKIA_VERSION}
+HAWTIO_VERSION=${HAWTIO_VERSION}
 
 EOF
 
+
 docker-compose \
-  --file docker-compose_example.yml \
+  --file compose/head.yml \
+  --file compose/jolokia.yml \
   config > docker-compose.yml

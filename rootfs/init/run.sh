@@ -54,8 +54,6 @@ custom_scripts() {
 
 run_tomcat() {
 
-  set +x
-
   # set pid file
   CATALINA_PID="${CATALINA_HOME}/temp/catalina.pid"
   # set memory settings

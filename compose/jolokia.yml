@@ -1,0 +1,23 @@
+---
+version: '3.3'
+
+services:
+
+  jolokia:
+    restart: always
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+        - BUILD_DATE
+        - BUILD_VERSION
+        - BUILD_TYPE
+        - TOMCAT_VERSION
+        - JOLOKIA_VERSION
+        - HAWTIO_VERSION
+        - DEBUG=true
+    ports:
+      - 8080:8080
+      - 22222:22222
+    container_name: jolokia
+    hostname: jolokia

@@ -1,8 +1,8 @@
 
 RED='\033[38;5;202m'
-GREEN='\033[38;5;70m'
+# GREEN='\033[38;5;70m'
 BLUE='\033[38;5;141m'
-WHITE='\033[0;37m'
+# WHITE='\033[0;37m'
 NC='\033[0m' # No Color
 BOLD='\033[1m'
 
@@ -13,9 +13,9 @@ log_output() {
 
   if [ -z "${level}" ]
   then
-    printf "$(date +"[%Y-%m-%d %H:%M:%S]") %b\n" "${message}"
+    printf "$(date +"[%Y-%m-%d %H:%M:%S]") %b\\n" "${message}"
   else
-    printf "$(date +"[%Y-%m-%d %H:%M:%S]") %b %b\n" "${level}"  "${message}"
+    printf "$(date +"[%Y-%m-%d %H:%M:%S]") %b %b\\n" "${level}"  "${message}"
   fi
 }
 
