@@ -1,5 +1,5 @@
 
-FROM alpine:3.9
+FROM alpine:3.10
 
 EXPOSE 8080 22222
 

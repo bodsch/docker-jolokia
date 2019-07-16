@@ -46,9 +46,10 @@ api_request() {
   local jolokia_version=
 
   code=$(curl \
+    --insecure \
+    --silent \
     --user ${JOLOKIA_API_USER}:${JOLOKIA_API_PASSWORD} \
     --header 'Accept: application/json' \
-    --insecure \
     http://${JOLOKIA_MASTER}:${JOLOKIA_API_PORT}/jolokia)
 
   if [[ $? -eq 0 ]]
