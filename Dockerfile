@@ -26,11 +26,13 @@ RUN \
     curl \
     nss \
     openjdk11-jre-headless \
-    tomcat-native \
+    tomcat-native
+
+RUN\
   echo "export LANG=${LANG}" > /etc/profile.d/locale.sh && \
   echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
   sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' "${JAVA_HOME}/jre/conf/security/java.security" && \
-  [ -d /opt ] || mkdir /opt && \
+  [ -d /opt ] || mkdir /opt 2> /dev/null && \
   echo "download tomcat version $TOMCAT_VERSION (https://archive.apache.org/dist/tomcat/tomcat-9/)" && \
   curl \
     --silent \
