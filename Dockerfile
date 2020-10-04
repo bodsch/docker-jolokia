@@ -13,8 +13,7 @@ ENV \
   TERM=xterm \
   CATALINA_HOME=/opt/tomcat \
   JAVA_HOME=/usr/lib/jvm/default-jvm \
-  PATH=${PATH}:/opt/jdk/bin:${CATALINA_HOME}/bin \
-  LANG=C.UTF-8
+  PATH=${PATH}:/opt/jdk/bin:${CATALINA_HOME}/bin
 
 # ---------------------------------------------------------------------------------------------------------------------
 
@@ -27,7 +26,7 @@ RUN \
     nss \
     openjdk11-jre-headless \
     tomcat-native && \
-  echo "export LANG=${LANG}" > /etc/profile.d/locale.sh && \
+  echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh && \
   echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
   sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' "${JAVA_HOME}/jre/conf/security/java.security" && \
   [ -d /opt ] || mkdir /opt 2> /dev/null && \
