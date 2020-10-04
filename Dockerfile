@@ -26,9 +26,7 @@ RUN \
     curl \
     nss \
     openjdk11-jre-headless \
-    tomcat-native
-
-RUN\
+    tomcat-native && \
   echo "export LANG=${LANG}" > /etc/profile.d/locale.sh && \
   echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
   sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' "${JAVA_HOME}/jre/conf/security/java.security" && \
