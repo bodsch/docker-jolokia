@@ -70,7 +70,7 @@ run_tomcat() {
   CATALINA_OPTS="${CATALINA_OPTS} -XX:HeapDumpPath=/var/logs/"
   CATALINA_OPTS="${CATALINA_OPTS} -XX:+HeapDumpOnOutOfMemoryError"
   CATALINA_OPTS="${CATALINA_OPTS} -XX:+UseConcMarkSweepGC"
-  CATALINA_OPTS="${CATALINA_OPTS} -XX:+UseParNewGC"
+  # CATALINA_OPTS="${CATALINA_OPTS} -XX:+UseParNewGC"
   CATALINA_OPTS="${CATALINA_OPTS} -XX:SurvivorRatio=8"
   CATALINA_OPTS="${CATALINA_OPTS} -XX:+UseCompressedOops"
   CATALINA_OPTS="${CATALINA_OPTS} -Dserver.name=${HOSTNAME}"

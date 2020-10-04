@@ -1,5 +1,5 @@
 
-FROM alpine:3.10
+FROM alpine:3
 
 EXPOSE 8080 22222
 
@@ -12,7 +12,6 @@ ARG HAWTIO_VERSION
 ENV \
   TERM=xterm \
   CATALINA_HOME=/opt/tomcat \
-  OPENJDK_VERSION="8.191.12" \
   JAVA_HOME=/usr/lib/jvm/default-jvm \
   PATH=${PATH}:/opt/jdk/bin:${CATALINA_HOME}/bin \
   LANG=C.UTF-8
@@ -26,11 +25,11 @@ RUN \
   apk add     --quiet --no-cache \
     curl \
     nss \
-    openjdk8-jre-base \
-    tomcat-native && \
+    openjdk11-jre-headless \
+    tomcat-native \
   echo "export LANG=${LANG}" > /etc/profile.d/locale.sh && \
   echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
-  sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' "${JAVA_HOME}/jre/lib/security/java.security" && \
+  sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' "${JAVA_HOME}/jre/conf/security/java.security" && \
   [ -d /opt ] || mkdir /opt && \
   echo "download tomcat version $TOMCAT_VERSION (https://archive.apache.org/dist/tomcat/tomcat-9/)" && \
   curl \
@@ -99,7 +98,7 @@ LABEL \
   org.label-schema.vcs-url="https://github.com/bodsch/docker-jolokia" \
   org.label-schema.vcs-ref=${VCS_REF} \
   org.label-schema.vendor="Bodo Schulz" \
-  org.label-schema.version=$JOLOKIA_VERSION \
+  org.label-schema.version=${JOLOKIA_VERSION} \
   org.label-schema.schema-version="1.0" \
   com.microscaling.docker.dockerfile="/Dockerfile" \
   com.microscaling.license="GNU General Public License v3.0"
