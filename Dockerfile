@@ -1,4 +1,80 @@
 
+FROM alpine:3 as stage1
+
+EXPOSE 8080 22222
+
+ARG BUILD_DATE
+ARG BUILD_VERSION
+ARG TOMCAT_VERSION
+ARG JOLOKIA_VERSION
+ARG HAWTIO_VERSION
+
+ENV \
+  TERM=xterm \
+  CATALINA_HOME=/opt/tomcat
+
+# hadolint ignore=SC2035,DL3003,DL3017,DL3018,DL4006
+RUN \
+  apk update  --quiet --no-cache && \
+  apk add     --quiet --no-cache \
+    curl && \
+  [ -d /opt ] || mkdir /opt 2> /dev/null
+
+# hadolint ignore=DL4006
+RUN \
+  echo "download tomcat version $TOMCAT_VERSION (https://archive.apache.org/dist/tomcat/tomcat-9/)" && \
+  curl \
+    --silent \
+    --location \
+    --retry 3 \
+    --cacert /etc/ssl/certs/ca-certificates.crt \
+    "https://archive.apache.org/dist/tomcat/tomcat-9/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz" \
+    | gunzip \
+    | tar x -C /opt/ && \
+  ln -s "/opt/apache-tomcat-$TOMCAT_VERSION" "${CATALINA_HOME}" && \
+  rm -rf "${CATALINA_HOME}/webapps/*"
+
+RUN \
+  ls -l "${CATALINA_HOME}" && \
+  echo "download jolokia version $JOLOKIA_VERSION (https://repo1.maven.org/maven2/org/jolokia/jolokia-war)" && \
+  curl \
+    --silent \
+    --location \
+    --retry 3 \
+    --cacert /etc/ssl/certs/ca-certificates.crt \
+    --output "${CATALINA_HOME}/webapps/jolokia.war" \
+    "https://repo1.maven.org/maven2/org/jolokia/jolokia-war/$JOLOKIA_VERSION/jolokia-war-$JOLOKIA_VERSION.war"
+
+# hadolint ignore=DL3003
+RUN \
+  echo "download hawtio version $HAWTIO_VERSION (https://github.com/hawtio/hawtio/tags)" && \
+  curl \
+    --silent \
+    --location \
+    --retry 3 \
+    --cacert /etc/ssl/certs/ca-certificates.crt \
+    --output "${CATALINA_HOME}/webapps/hawtio.war" \
+    "https://oss.sonatype.org/content/repositories/public/io/hawt/hawtio-default/$HAWTIO_VERSION/hawtio-default-$HAWTIO_VERSION.war"
+
+WORKDIR ${CATALINA_HOME}/webapps
+
+RUN \
+  mkdir \
+    jolokia hawtio && \
+  unzip jolokia.war -d jolokia > /dev/null && \
+  unzip hawtio.war  -d hawtio  > /dev/null && \
+  rm -f *.war && \
+  rm -f "${CATALINA_HOME}/LICENSE" && \
+  rm -f "${CATALINA_HOME}/NOTICE" && \
+  rm -f "${CATALINA_HOME}/RELEASE-NOTES" && \
+  rm -f "${CATALINA_HOME}/RUNNING.txt" && \
+  rm -f "${CATALINA_HOME}/bin/*.bat"
+
+RUN \
+  ls -l /opt
+
+# ---------------------------------------------------------------------------------------------------------------------
+
 FROM alpine:3
 
 EXPOSE 8080 22222
@@ -29,46 +105,8 @@ RUN \
   echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh && \
   echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
   sed -i 's,#networkaddress.cache.ttl=-1,networkaddress.cache.ttl=30,' "${JAVA_HOME}/jre/conf/security/java.security" && \
-  [ -d /opt ] || mkdir /opt 2> /dev/null && \
-  echo "download tomcat version $TOMCAT_VERSION (https://archive.apache.org/dist/tomcat/tomcat-9/)" && \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --cacert /etc/ssl/certs/ca-certificates.crt \
-    "https://archive.apache.org/dist/tomcat/tomcat-9/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz" \
-    | gunzip \
-    | tar x -C /opt/ && \
   ln -s "/opt/apache-tomcat-$TOMCAT_VERSION" "${CATALINA_HOME}" && \
   ln -s "${CATALINA_HOME}/logs" /var/log/jolokia && \
-  rm -rf "${CATALINA_HOME}/webapps/*" && \
-  echo "download jolokia version $JOLOKIA_VERSION (https://repo1.maven.org/maven2/org/jolokia/jolokia-war)" && \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --cacert /etc/ssl/certs/ca-certificates.crt \
-    --output "${CATALINA_HOME}/webapps/jolokia.war" \
-    "https://repo1.maven.org/maven2/org/jolokia/jolokia-war/$JOLOKIA_VERSION/jolokia-war-$JOLOKIA_VERSION.war" && \
-  echo "download hawtio version $HAWTIO_VERSION (https://github.com/hawtio/hawtio/tags)" && \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --cacert /etc/ssl/certs/ca-certificates.crt \
-    --output "${CATALINA_HOME}/webapps/hawtio.war" \
-    "https://oss.sonatype.org/content/repositories/public/io/hawt/hawtio-default/$HAWTIO_VERSION/hawtio-default-$HAWTIO_VERSION.war" && \
-  cd "${CATALINA_HOME}/webapps/" && \
-  mkdir \
-    jolokia hawtio && \
-  unzip jolokia.war -d jolokia > /dev/null && \
-  unzip hawtio.war  -d hawtio  > /dev/null && \
-  rm -f *.war && \
-  rm -f "${CATALINA_HOME}/LICENSE" && \
-  rm -f "${CATALINA_HOME}/NOTICE" && \
-  rm -f "${CATALINA_HOME}/RELEASE-NOTES" && \
-  rm -f "${CATALINA_HOME}/RUNNING.txt" && \
-  rm -f "${CATALINA_HOME}/bin/*.bat" && \
   rm -rf \
     /tmp/* \
     /var/cache/apk/*
@@ -76,6 +114,7 @@ RUN \
 WORKDIR ${CATALINA_HOME}/webapps/
 
 COPY rootfs/ /
+COPY --from=stage1  /opt  /opt
 
 CMD ["/init/run.sh"]
 
